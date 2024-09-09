@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +23,36 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('home', [HomeController::class, 'index'])->name('home');
+
+
+Route::middleware('auth')->group(function(){
+    Route::get("admin", [DashBoardController::class, "show"]);
+    Route::get("admin/dashboard", [DashBoardController::class, "show"]);
+
+    // admin/user
+    Route::get("admin/user/list", [AdminUserController::class, "list"]);
+
+    //add
+    Route::get("admin/user/add", [AdminUserController::class, "add"]);
+    Route::post("admin/user/store", [AdminUserController::class, "store"]);
+
+    //delete
+    Route::get("admin/user/delete/{id}", [AdminUserController::class, "delete"])->name("delete-user");
+
+    //select option
+    Route::get("admin/user/action", [AdminUserController::class, "action"]);
+
+    //update
+    Route::get("admin/user/edit{id}", [AdminUserController::class, "edit"])->name('user.edit');
+    Route::post("admin/user/update{id}", [AdminUserController::class, "update"])->name('user.update');
+
+
+});
+
+
+
+
+
+
+
