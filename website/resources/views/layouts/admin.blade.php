@@ -129,7 +129,7 @@
                             <li><a href="{{url('admin/user/list')}}">Danh sách</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link active">
+                    <li class="nav-link">
                         <a href="?view=permission">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
