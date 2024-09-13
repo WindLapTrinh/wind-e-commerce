@@ -130,7 +130,7 @@
                         </ul>
                     </li>
                     <li class="nav-link">
-                        <a href="?view=permission">
+                        <a href="{{url("admin/permission/add")}}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
                             </div>
