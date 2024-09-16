@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -138,38 +139,31 @@ class AdminUserController extends Controller
         }
     }
 
-    function edit($id){
-        $user = User::find($id);
+    function edit(User $user){
+        $roles = Role::all();
 
-        return view('admin.user.edit', compact('user'));
+        return view('admin.user.edit', compact('user', 'roles'));
     }
     
-    function update(Request $request, $id){
+    function update(Request $request, User $user) {
         $request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
-                // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
-            ],
-            [
-                'required' => ':attribute không được để trống',
-                'min' => ':attribute có độ dài ít nhất :min ký tự',
-                'max' => ':attribute có độ dài tối đa :mã ký tự',
-                'confirmed' => 'Xác nhận mật khẩu không thành công',
-
-            ],
-            [
-                'name' => 'Tên người dùng',
-                // 'email' => 'Email',
-                'password' => 'Mật khẩu'
+                'email' => ['required', 'email', 'unique:users,email,' . $user->id],
+                // 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]
         );
-
-        User::where('id', $id)->update([
+    
+        $user->update([
             'name' => $request->input('name'),
-            // 'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
+            'email' => $request->input('email'),
+            // 'password' => Hash::make($request->input('password')),
         ]);
-        return redirect("admin/user/list")->with('status', 'Đã cập nhập thông tin thành công');
+    
+        // Cập nhật các vai trò cho người dùng
+        $user->roles()->sync($request->input('role_id'));
+    
+        return redirect("admin/user/list")->with('status', 'Đã cập nhật thông tin thành công');
     }
+    
 }

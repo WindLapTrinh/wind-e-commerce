@@ -17,36 +17,22 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input class="form-control" type="text" value="{{$user->email}}" name="email" id="email" disabled>
+                    {{-- <label for="email">Email</label>
+                    <input class="form-control" type="text" value="{{$user->email}}" name="email" id="email" disabled> --}}
+                    {!! Form::label("email", "Email") !!}
+                    {!! Form::text("email", $user->email, ["class" => "form-control", "id" => "email", "readonly" => "readonly"]) !!}
                     @error('email')
-                        <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="password">Mật khẩu</label>
-                    <input class="form-control" type="password" name="password" id="password">
-                    @error('password')
-                        <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="password-confirm">Xác nhận mật khẩu</label>
-                    <input class="form-control" type="password" name="password_confirmation" id="password-confirm">
-                    @error('password_confirmation')
                         <small class="text-danger">{{$message}}</small>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="">Nhóm quyền</label>
-                    <select class="form-control" id="">
-                        <option>Chọn quyền</option>
-                        <option>Danh mục 1</option>
-                        <option>Danh mục 2</option>
-                        <option>Danh mục 3</option>
-                        <option>Danh mục 4</option>
-                    </select>
+                    @php
+                        $selectedRoles = $user->roles->pluck('id')->toArray();
+                        $options = $roles->pluck('name', 'id')->toArray();
+                    @endphp
+                    <label for="roles">Nhóm quyền</label>
+                    {!! Form::select("role_id[]", $options, $selectedRoles, ["id" => "roles","class" => "form-control", "multiple" => true]) !!}
                 </div>
 
                 <button type="submit" name="btn-update" value="Cập nhập" class="btn btn-primary">Cập nhập</button>

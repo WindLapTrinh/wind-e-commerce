@@ -138,9 +138,9 @@
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
-                            <li><a href="?view=permission">Quyền</a></li>
-                            <li><a href="?view=add-role">Thêm vai trò</a></li>
-                            <li><a href="?view=list-role">Danh sách vai trò</a></li>
+                            <li><a href="{{url("admin/permission/add")}}">Quyền</a></li>
+                            <li><a href="{{route("role.add")}}">Thêm vai trò</a></li>
+                            <li><a href="{{route("role.list")}}">Danh sách vai trò</a></li>
                         </ul>
                     </li>
 
