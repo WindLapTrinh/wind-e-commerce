@@ -14,9 +14,9 @@ class RoleController extends Controller
     //
     function getList(){
         
-        if (! Gate::allows('product.add')) {
-            abort(403);
-        }
+        // if (! Gate::allows('role.show')) {
+        //     abort(403);
+        // } 
 
         $roles = Role::all();
         return view("admin.role.list", compact("roles"));

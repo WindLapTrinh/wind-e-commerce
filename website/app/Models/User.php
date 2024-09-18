@@ -46,7 +46,7 @@ class User extends Authenticatable
     public function roles(){
         return $this->belongsToMany(Role::class, 'user_role'); 
     }
-
+    //func phân quyền
     public function hasPermission($permission){
         foreach($this->roles as $role){
             if($role->permissions->where('slug', $permission)->count() > 0){

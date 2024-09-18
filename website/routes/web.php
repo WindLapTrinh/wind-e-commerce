@@ -60,12 +60,12 @@ Route::middleware('auth')->group(function(){
     Route::get("admin/permission/delete/{id}", [PermissionController::class, "delete"])->name("permission.delete");
 
     //admin role
-    Route::get("admin/role/list", [RoleController::class, "getList"])->name("role.list");
-    Route::get("admin/role/add", [RoleController::class, "add"])->name("role.add");
-    Route::post("admin/role/store", [RoleController::class, "store"])->name("role.store");
-    Route::get("admin/role/edit/{role}", [RoleController::class, "edit"])->name("role.edit");
-    Route::post("admin/role/update/{role}", [RoleController::class, "update"])->name("role.update");
-    Route::get("admin/role/delete/{role}", [RoleController::class, "delete"])->name("role.delete");
+    Route::get("admin/role/list", [RoleController::class, "getList"])->name("role.list")->can('role.show');
+    Route::get("admin/role/add", [RoleController::class, "add"])->name("role.add")->can('role.add');
+    Route::post("admin/role/store", [RoleController::class, "store"])->name("role.store")->can('role.add');
+    Route::get("admin/role/edit/{role}", [RoleController::class, "edit"])->name("role.edit")->can('role.edit');
+    Route::post("admin/role/update/{role}", [RoleController::class, "update"])->name("role.update")->can('role.edit');
+    Route::get("admin/role/delete/{role}", [RoleController::class, "delete"])->name("role.delete")->can('role.delete');
 
 });
 

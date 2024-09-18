@@ -25,6 +25,7 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label("slug", "Slug")!!}
+                                <small class="form-text text-muted pb-2">Ví dụ: posts.add</small>                            
                                 {!! Form::text("slug", old("slug"), ["class" => "form-control", "id" => "slug"])!!}
                                 @error('slug')
                                     <small class="text-danger">{{$message}}</small>

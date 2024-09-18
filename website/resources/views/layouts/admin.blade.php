@@ -129,20 +129,23 @@
                             <li><a href="{{url('admin/user/list')}}">Danh sách</a></li>
                         </ul>
                     </li>
-                    <li class="nav-link">
-                        <a href="{{url("admin/permission/add")}}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Phân quyền
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{url("admin/permission/add")}}">Quyền</a></li>
-                            <li><a href="{{route("role.add")}}">Thêm vai trò</a></li>
-                            <li><a href="{{route("role.list")}}">Danh sách vai trò</a></li>
-                        </ul>
-                    </li>
+                    {{-- @canany(['role.show', 'role.add', 'role.edit', 'role.delete']) --}}
+                        <li class="nav-link">
+                            <a href="{{url("admin/permission/add")}}">
+                                <div class="nav-link-icon d-inline-flex">
+                                    <i class="far fa-folder"></i>
+                                </div>
+                                Phân quyền
+                            </a>
+                            <i class="arrow fas fa-angle-right"></i>
+                            <ul class="sub-menu">
+                                <li><a href="{{url("admin/permission/add")}}">Quyền</a></li>
+                                <li><a href="{{route("role.add")}}">Thêm vai trò</a></li>
+                                <li><a href="{{route("role.list")}}">Danh sách vai trò</a></li>
+                            </ul>
+                        </li>
+                    {{-- @endcanany --}}
+                    
 
                     <!-- <li class="nav-link"><a>Bài viết</a>
                         <ul class="sub-menu">
