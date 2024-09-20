@@ -8,7 +8,7 @@
         @endif
         <div class="card">
             <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
-                <h5 class="m-0 ">Danh sách vai trò</h5>
+                <h5 class="m-0 text-header-page">Danh sách vai trò</h5>
                 <div class="form-search form-inline">
                     <form action="#">
                         <input type="" class="form-control form-search" placeholder="Tìm kiếm">
@@ -49,12 +49,12 @@
                                 </td>
                                 
                                     <td scope="row">{{$t++}}</td>
-                                    <td><a href="{{route('role.edit', $role->id)}}">{{$role->name}}</a></td>
+                                    <td><a class="name-role" href="{{route('role.edit', $role->id)}}">{{$role->name}}</a></td>
                                     <td>{{$role->description}}</td>
-                                    <td>{{$role->created_at}}</td>
+                                    <td>{{ $role->created_at->format('d/m/Y') }}</td>
                                     <td>
-                                        <a href="{{route('role.edit', $role->id)}}" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                        <a href="{{route('role.delete', $role->id)}}" onclick="return confirm('Bạn có chắc chắn xóa vai trò này không')" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
+                                        <a href="{{route('role.edit', $role->id)}}" class="btn btn-success btn-sm rounded-0 text-white btn-submit" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                        <a href="{{route('role.delete', $role->id)}}" onclick="return confirm('Bạn có chắc chắn xóa vai trò này không')" class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
                                     </td>
                             </tr>
                         

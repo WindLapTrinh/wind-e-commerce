@@ -14,18 +14,76 @@
 <body>
     <div id="warpper" class="nav-fixed">
         <nav class="topnav shadow navbar-light bg-white d-flex">
-            <div class="navbar-brand"><a href="{{url('admin')}}">Wind Lập Trình</a></div>
+            <div class="navbar-brand"><a class="brand-name" href="{{url('admin')}}">Wind Lập Trình</a></div>
             <div class="nav-right ">
                 <div class="btn-group mr-auto">
-                    <button type="button" class="btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="plus-icon fas fa-plus-circle"></i>
-                    </button>
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                   
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{url('admin/post/add')}}">Thêm bài viết</a>
                         <a class="dropdown-item" href="{{url('admin/product/add')}}">Thêm sản phẩm</a>
                         <a class="dropdown-item" href="{{url('admin/order/add')}}">Thêm đơn hàng</a>
                     </div>
                 </div>
+                <div class="btn-group">
+                    <a class="nav-link list-notify" href="#" id="alertsDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell fa-fw"></i>
+                        <!-- Counter - Alerts -->
+                        <span class=" badge-danger badge-counter">3</span>
+                    </a>
+                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                        <h6 class="dropdown-header">
+                            Alerts Center
+                        </h6>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-500">December 12, 2019</div>
+                                <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                            </div>
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-success">
+                                    <i class="fas fa-donate text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-500">December 7, 2019</div>
+                                $290.29 has been deposited into your account!
+                            </div>
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-warning">
+                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-500">December 2, 2019</div>
+                                Spending Alert: We've noticed unusually high spending for your account.
+                            </div>
+                        </a>
+                        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                    </div>
+                </div>
+                
                 <div class="btn-group">
                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{Auth::user()->name}}
@@ -50,114 +108,116 @@
             $module_active = session('module_active');
         @endphp
         <div id="page-body" class="d-flex">
-            <div id="sidebar" class="bg-white">
+            <div id="sidebar">
+                <div class="info-admin">
+                    <img class="logo-admin" src="{{asset('images/wind-app.png')}}" alt="Logo">
+                    <div class="name-admin"><a class="brand-name" href="{{url('admin')}}">Wind Lập Trình</a></div>    
+                </div>
                 <ul id="sidebar-menu">
                     <li class="nav-link {{$module_active == 'dashboard' ? 'active' : ''}}">
-                        <a href="{{url('dashboard')}}">
+                        <a class="name-parent" href="{{url('dashboard')}}">
                             <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
+                                <i class="fas fa-chart-pie icon-parent-menu"></i>
                             </div>
                             Dashboard
                         </a>
-                        <i class="arrow fas fa-angle-right"></i>
                     </li>
                     <li class="nav-link">
-                        <a href="{{url('admin/page/list')}}">
+                        <a class="name-parent" href="{{url('admin/page/list')}}">
                             <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
+                                <i class="fas fa-file-alt icon-parent-menu"></i>
                             </div>
                             Trang
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
 
                         <ul class="sub-menu">
-                            <li><a href="{{url('admin/page/add')}}">Thêm mới</a></li>
-                            <li><a href="{{url('admin/post/list')}}">Danh sách</a></li>
+                            <li class="chilldent-menu-top"><a href="{{url('admin/page/add')}}">Thêm mới</a></li>
+                            <li class="chilldent-menu-bottom"><a href="{{url('admin/post/list')}}">Danh sách</a></li>
                         </ul>
                     </li>
                     <li class="nav-link">
-                        <a href="{{url('admin/post/list')}}">
+                        <a class="name-parent" href="{{url('admin/post/list')}}">
                             <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
+                                <i class="fas fa-clipboard-list icon-parent-menu"></i>
                             </div>
                             Bài viết
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{url('admin/post/add')}}">Thêm mới</a></li>
+                            <li class="chilldent-menu-top"><a href="{{url('admin/post/add')}}">Thêm mới</a></li>
                             <li><a href="{{url('admin/post/list')}}">Danh sách</a></li>
-                            <li><a href="{{url('admin/post/cat/add')}}">Danh mục</a></li>
+                            <li class="chilldent-menu-bottom"><a href="{{url('admin/post/cat/add')}}">Danh mục</a></li>
                         </ul>
                     </li>
                     <li class="nav-link">
-                        <a href="{{url('admin/product/list')}}">
+                        <a class="name-parent" href="{{url('admin/product/list')}}">
                             <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
+                                <i class="fas fa-briefcase icon-parent-menu"></i>
                             </div>
                             Sản phẩm
                         </a>
-                        <i class="arrow fas fa-angle-down"></i>
+                        <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{url('admin/product/add')}}">Thêm mới</a></li>
+                            <li class="chilldent-menu-top"><a href="{{url('admin/product/add')}}">Thêm mới</a></li>
                             <li><a href="{{url('admin/product/list')}}">Danh sách</a></li>
-                            <li><a href="{{url('admin/product/cat/list')}}">Danh mục</a></li>
+                            <li class="chilldent-menu-bottom"><a href="{{url('admin/product/cat/list')}}">Danh mục</a></li>
                         </ul>
                     </li>
                     <li class="nav-link">
-                        <a href="{{url('admin/order/list')}}">
+                        <a class="name-parent" href="{{url('admin/order/list')}}">
                             <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
+                                <i class="fas fa-shopping-cart icon-parent-menu"></i>
                             </div>
                             Bán hàng
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{url('admin/product/list')}}">Đơn hàng</a></li>
-                        </ul>
+                        {{-- <ul class="sub-menu">
+                            <li class="chilldent-menu-top"><a href="{{url('admin/product/list')}}">Đơn hàng</a></li>
+                        </ul> --}}
                     </li>
                     <li class="nav-link {{$module_active == 'user' ? 'active' : ''}}">
-                        <a href="{{url('admin/user/list')}}">
+                        <a class="name-parent" href="{{url('admin/user/list')}}">
                             <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
+                                <i class="fas fa-user icon-parent-menu"></i>
                             </div>
                             Users
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
 
                         <ul class="sub-menu">
-                            <li><a href="{{url('admin/user/add')}}">Thêm mới</a></li>
-                            <li><a href="{{url('admin/user/list')}}">Danh sách</a></li>
+                            <li class="chilldent-menu-top"><a href="{{url('admin/user/add')}}">Thêm mới</a></li>
+                            <li class="chilldent-menu-bottom"><a href="{{url('admin/user/list')}}">Danh sách</a></li>
                         </ul>
                     </li>
                     {{-- @canany(['role.show', 'role.add', 'role.edit', 'role.delete']) --}}
                         <li class="nav-link">
-                            <a href="{{url("admin/permission/add")}}">
+                            <a class="name-parent" href="{{url("admin/permission/add")}}">
                                 <div class="nav-link-icon d-inline-flex">
-                                    <i class="far fa-folder"></i>
+                                    <i class="fas fa-user-lock icon-parent-menu"></i>
                                 </div>
                                 Phân quyền
                             </a>
                             <i class="arrow fas fa-angle-right"></i>
                             <ul class="sub-menu">
-                                <li><a href="{{url("admin/permission/add")}}">Quyền</a></li>
+                                <li class="chilldent-menu-top"><a href="{{url("admin/permission/add")}}">Quyền</a></li>
                                 <li><a href="{{route("role.add")}}">Thêm vai trò</a></li>
-                                <li><a href="{{route("role.list")}}">Danh sách vai trò</a></li>
+                                <li class="chilldent-menu-bottom"><a href="{{route("role.list")}}">Danh sách vai trò</a></li>
                             </ul>
                         </li>
                     {{-- @endcanany --}}
                     
 
-                    <!-- <li class="nav-link"><a>Bài viết</a>
-                        <ul class="sub-menu">
-                            <li><a>Thêm mới</a></li>
-                            <li><a>Danh sách</a></li>
-                            <li><a>Thêm danh mục</a></li>
-                            <li><a>Danh sách danh mục</a></li>
-                        </ul>
+        
+                    <li class="nav-link">
+                        <a class="name-parent" href="#">
+                            <div class="nav-link-icon d-inline-flex">
+                                <i class="fas fa-cog icon-parent-menu"></i>
+                            </div>
+                           Hệ thống
+                        </a>
+                        <i class="arrow fas fa-angle-right"></i>
                     </li>
-                    <li class="nav-link"><a>Sản phẩm</a></li>
-                    <li class="nav-link"><a>Đơn hàng</a></li>
-                    <li class="nav-link"><a>Hệ thống</a></li> -->
 
                 </ul>
             </div>

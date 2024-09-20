@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function(){
     Route::get("admin/permission/delete/{id}", [PermissionController::class, "delete"])->name("permission.delete");
 
     //admin role
-    Route::get("admin/role/list", [RoleController::class, "getList"])->name("role.list")->can('role.show');
+    Route::get("admin/role/list", [RoleController::class, "getList"])->name("role.list");
     Route::get("admin/role/add", [RoleController::class, "add"])->name("role.add")->can('role.add');
     Route::post("admin/role/store", [RoleController::class, "store"])->name("role.store")->can('role.add');
     Route::get("admin/role/edit/{role}", [RoleController::class, "edit"])->name("role.edit")->can('role.edit');
