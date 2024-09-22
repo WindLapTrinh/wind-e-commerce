@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/solid.min.css">
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/admin/style.css')}}">
     <title>Wind Lập Trình</title>
 </head>
 
@@ -115,7 +115,7 @@
                 </div>
                 <ul id="sidebar-menu">
                     <li class="nav-link {{$module_active == 'dashboard' ? 'active' : ''}}">
-                        <a class="name-parent" href="{{url('dashboard')}}">
+                        <a class="name-parent" href="{{url('admin')}}">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fas fa-chart-pie icon-parent-menu"></i>
                             </div>
@@ -206,10 +206,8 @@
                             </ul>
                         </li>
                     {{-- @endcanany --}}
-                    
-
-        
-                    <li class="nav-link">
+                            
+                    {{-- <li class="nav-link">
                         <a class="name-parent" href="#">
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="fas fa-cog icon-parent-menu"></i>
@@ -217,7 +215,11 @@
                            Hệ thống
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
-                    </li>
+                        <ul class="sub-menu">
+                            <li class="chilldent-menu-top"><a href="">Tạo tài khoản</a></li>
+                            <li class="chilldent-menu-bottom"><a href="">D.sách tài khoản</a></li>
+                        </ul>
+                    </li> --}}
 
                 </ul>
             </div>

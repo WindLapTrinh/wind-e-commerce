@@ -13,7 +13,7 @@ class AdminUserController extends Controller
     //
     function __construct()
     {
-        $this->middleware(function($request, $next){
+        $this->middleware(function ($request, $next) {
             session(['model_active' => 'user']);
 
             return $next($request);
@@ -49,12 +49,13 @@ class AdminUserController extends Controller
 
 
         // dd($users->total());
-        return view('admin.user.list', compact('users', 'count', 'request','list_act'));
+        return view('admin.user.list', compact('users', 'count', 'request', 'list_act'));
     }
 
     function add(Request $request)
     {
-        return view("admin.user.add");
+        $roles = Role::all();
+        return view("admin.user.add", compact('roles'));
     }
 
     function store(Request $request)
@@ -64,6 +65,7 @@ class AdminUserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'role_id' => ['required'],
             ],
             [
                 'required' => ':attribute không được để trống',
@@ -79,11 +81,13 @@ class AdminUserController extends Controller
             ]
         );
 
-        User::create([
+        $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
+        // Gán role cho user
+        $user->roles()->sync($request->input('role_id'));
 
         return redirect("admin/user/list")->with('status', "Đã thêm thành viên thành công");
     }
@@ -124,28 +128,27 @@ class AdminUserController extends Controller
                 return redirect('admin/user/list')->with('status', 'Bạn đã khôi phục thành công');
             }
 
-            if($act == "forceDelete"){
+            if ($act == "forceDelete") {
                 User::withTrashed()
-                ->whereIn('id',$list_check)
-                ->forceDelete();
+                    ->whereIn('id', $list_check)
+                    ->forceDelete();
                 return redirect('admin/user/list')->with('status', 'Bạn đã xóa vĩnh viễn thành viên thành công');
-
             }
             return redirect('admin/user/list')->with('status', 'Bạn không thể thao tác trên tài khoản của bạn !');
-
-        }else{
+        } else {
             return redirect('admin/user/list')->with('status', 'Bạn cần chọn phần tử thực hiện !');
-
         }
     }
 
-    function edit(User $user){
+    function edit(User $user)
+    {
         $roles = Role::all();
 
         return view('admin.user.edit', compact('user', 'roles'));
     }
-    
-    function update(Request $request, User $user) {
+
+    function update(Request $request, User $user)
+    {
         $request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
@@ -153,17 +156,16 @@ class AdminUserController extends Controller
                 // 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]
         );
-    
+
         $user->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             // 'password' => Hash::make($request->input('password')),
         ]);
-    
+
         // Cập nhật các vai trò cho người dùng
         $user->roles()->sync($request->input('role_id'));
-    
+
         return redirect("admin/user/list")->with('status', 'Đã cập nhật thông tin thành công');
     }
-    
 }

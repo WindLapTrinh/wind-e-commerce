@@ -68,11 +68,11 @@
                                         <span class="badge badge-warning">{{$role->name}}</span>
                                     @endforeach
                                 </td>
-                                <td>{{$user->created_at}}</td>
+                                <td>{{$user->created_at->format('d/m/Y')}}</td>
                                 <td>
-                                    <a href="{{route('user.edit', $user->id)}}" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                    <a href="{{route('user.edit', $user->id)}}" class="btn btn-success btn-sm rounded-0 text-white btn-submit" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
                                 @if (Auth::id() != $user->id)
-                                        <a href="{{route('delete-user', $user->id)}}" onclick="return confirm('Bạn có chắc xóa thành viên này không')" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
+                                        <a href="{{route('delete-user', $user->id)}}" onclick="return confirm('Bạn có chắc xóa thành viên này không')" class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
                                 @endif
                                 </td>
                             </tr>
