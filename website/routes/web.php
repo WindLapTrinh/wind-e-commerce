@@ -4,10 +4,13 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Facades\Lfm;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +30,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('home', [HomeController::class, 'index'])->name('home');
+
+Route::group(['prefix' => 'laravel-filemanager'], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
 
 
 Route::middleware('auth')->group(function(){
@@ -67,7 +74,13 @@ Route::middleware('auth')->group(function(){
     Route::post("admin/role/update/{role}", [RoleController::class, "update"])->name("role.update")->can('role.edit');
     Route::get("admin/role/delete/{role}", [RoleController::class, "delete"])->name("role.delete")->can('role.delete');
 
+
+    //admin module post
+    Route::get("admin/post/add", [PostController::class, "add"])->name("post.add");
+    Route::get("admin/post/cat/add", [PostController::class, "cat"])->name("post.cat");
+
 });
+
 
 
 
