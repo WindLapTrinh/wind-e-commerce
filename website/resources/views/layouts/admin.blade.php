@@ -198,7 +198,7 @@
                         <ul class="sub-menu">
                             <li class="chilldent-menu-top"><a href="{{ url('admin/post/add') }}">Thêm mới</a></li>
                             <li><a href="{{ url('admin/post/list') }}">Danh sách</a></li>
-                            <li class="chilldent-menu-bottom"><a href="{{ url('admin/post/cat/add') }}">Danh mục</a>
+                            <li class="chilldent-menu-bottom"><a href="{{ url('category/post/add') }}">Danh mục</a>
                             </li>
                         </ul>
                     </li>
@@ -285,7 +285,13 @@
 
 
     </div>
-    
+    <script>
+        $(document).ready(function(){
+            $('.accordion-toggle').click(function(){
+                $(this).next().find('.accordian-body').collapse('toggle');
+            });
+        });
+    </script>    
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\CategoriesPostController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
@@ -77,7 +78,9 @@ Route::middleware('auth')->group(function(){
 
     //admin module post
     Route::get("admin/post/add", [PostController::class, "add"])->name("post.add");
-    Route::get("admin/post/cat/add", [PostController::class, "cat"])->name("post.cat");
+    Route::get("category/post/add", [CategoriesPostController::class, "add"])->name("category.post.add");
+    Route::post("category/post/store", [CategoriesPostController::class, "store"])->name("category.post.store");
+
 
 });
 

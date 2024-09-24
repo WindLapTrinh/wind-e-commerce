@@ -9,19 +9,46 @@ class CategoriesPost extends Model
 {
     use HasFactory;
 
-    // Khai báo bảng được sử dụng
+    use HasFactory;
+
     protected $table = 'categories_post';
 
-    // Khai báo các trường có thể điền dữ liệu
     protected $fillable = [
-        'category_name',
-        'category_slug',
-        'category_desc',
+        'name',
+        'slug',
+        'desc',
         'user_id',
         'parent_id'
     ];
-    public function posts()
+
+    // Trong Model Category.php
+    public function getIndentedNameAttribute()
     {
-        return $this->belongsToMany(Post::class);
+        // Đếm số cấp độ của danh mục hiện tại
+        $level = $this->getLevel();
+
+        // Thêm dấu --- tương ứng với cấp độ
+        return str_repeat('--- ', $level) . $this->name;
+    }
+
+    public function getLevel()
+    {
+        // Biến $level để xác định cấp độ của danh mục
+        $level = 0;
+        $parent = $this->parent;
+
+        // Tăng $level lên dựa trên số lần lặp qua các danh mục cha
+        while ($parent) {
+            $level++;
+            $parent = $parent->parent;
+        }
+
+        return $level;
+    }
+
+
+    public function parent()
+    {
+        return $this->belongsTo(CategoriesPost::class, 'parent_id');
     }
 }
