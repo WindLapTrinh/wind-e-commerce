@@ -2,7 +2,6 @@
 
 @section('content')
     <div id="content" class="container-fluid">
-
         <div class="row">
             <div class="col-12">
                 @if (session('status'))
@@ -25,43 +24,30 @@
                                     <th scope="col">Tên danh mục</th>
                                     <th scope="col">Slug</th>
                                     <th scope="col">Mô tả</th>
-                                    <th scope="col">Danh mục cha</th>
-                                    <th scope="col">Trạng thái</th>
                                     <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Danh mục cha giả định -->
-                                @if ($categories != null)
-                                    @php
-                                        $t = 1;
-                                    @endphp
-                                    @foreach ($categories as $category)
-                                        <tr>
-                                            <th scope="row">{{ $t++ }}</th>
-                                            <td>{{ $category->name }}</td>
-                                            <td>{{ $category->slug }}</td>
-                                            <td>{!! $category->desc !!}</td>
-                                            <td>
-                                                @if ($category->parent_id == 0)
-                                                    Không có
-                                                @else
-                                                    {{ $category->parent->name ?? 'Không rõ' }}
-                                                @endif
-                                            </td>
-
-                                            <td>Công khai</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-warning">Sửa</button>
-                                                <button class="btn btn-sm btn-danger">Xóa</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                <tr>
-                                    <td colspan="5">Không danh mục bài viết nào được khởi tạo !</td>
-                                </tr>
-                                @endif
+                                @foreach ($categories as $category)
+                                    <tr>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td><a class="text-setting"
+                                                href="{{ route('category.post.subcategories', $category->id) }}">{{ $category->name }}</a>
+                                        </td>
+                                        <td>{{ $category->slug }}</td>
+                                        <td>{!! $category->desc !!}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-success btn-sm rounded-0 text-white btn-submit"
+                                                type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                    class="fa fa-edit"></i></a>
+                                            <a href="#"
+                                                onclick="return confirm('Bạn có chắc xóa thành viên này không')"
+                                                class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                    class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -69,7 +55,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Thêm mới danh mục -->
     <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel"
         aria-hidden="true">
@@ -97,8 +82,12 @@
                             <label for="parent_id">Danh mục cha</label>
                             <select name="parent_id" class="form-control" id="parent_id">
                                 <option value="0">Không có</option>
+                                <!-- Gọi hàm đệ quy để hiển thị danh mục phân cấp -->
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @include('admin.partials.category-option', [
+                                        'category' => $category,
+                                        'prefix' => '',
+                                    ])
                                 @endforeach
                             </select>
                         </div>

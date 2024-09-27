@@ -46,6 +46,11 @@ class CategoriesPost extends Model
         return $level;
     }
 
+    public function children()
+    {
+        return $this->hasMany(CategoriesPost::class, 'parent_id');
+    }
+
 
     public function parent()
     {

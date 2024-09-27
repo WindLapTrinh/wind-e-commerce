@@ -291,7 +291,34 @@
                 $(this).next().find('.accordian-body').collapse('toggle');
             });
         });
-    </script>    
+    </script>
+     <script>
+        function showSubcategories(parentId) {
+            // Gửi AJAX request để lấy danh mục con
+            $.ajax({
+                url: `/category/subcategories/${parentId}`,
+                method: 'GET',
+                success: function(data) {
+                    let tbody = $('#subcategoriesTable tbody');
+                    tbody.empty();
+                    if (data.length > 0) {
+                        data.forEach(function(subcategory, index) {
+                             tbody.append(`
+                                <tr>
+                                    <th scope="row">${index + 1}</th>
+                                    <td>${subcategory.name}</td>
+                                    <td>${subcategory.slug}</td>
+                                    <td>${subcategory.desc ?? ''}</td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        tbody.append(`<tr><td colspan="4">Không có danh mục con nào</td></tr>`);
+                    }
+                }
+            });
+        }
+    </script>  
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

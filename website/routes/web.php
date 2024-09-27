@@ -80,7 +80,8 @@ Route::middleware('auth')->group(function(){
     Route::get("admin/post/add", [PostController::class, "add"])->name("post.add");
     Route::get("category/post/add", [CategoriesPostController::class, "add"])->name("category.post.add");
     Route::post("category/post/store", [CategoriesPostController::class, "store"])->name("category.post.store");
-
+    Route::get('/category/subcategories/{parentId}', [CategoriesPostController::class, 'getSubcategories']);
+    Route::get('/category/subcategories/{parentId}', [CategoriesPostController::class, 'showSubcategories'])->name('category.post.subcategories');
 
 });
 

@@ -15,8 +15,11 @@
 }
 .btn-submit{
     border-radius: 3px !important;
-    float: right;
-}   
+}
+.text-setting{
+    color: #4e73df !important;
+    font-weight: 500;
+}
 
 /* and setting  */
 /* header  */
