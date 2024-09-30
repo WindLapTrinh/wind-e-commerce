@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CategoriesPostController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
@@ -23,7 +24,7 @@ use UniSharp\LaravelFilemanager\Facades\Lfm;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//setting
 Route::get('/', function () {
     return view('template.home');
 });
@@ -35,8 +36,11 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::group(['prefix' => 'laravel-filemanager'], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+Route::resource('images', ImageController::class);
 
+Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('upload.route.name');
 
+//admin
 Route::middleware('auth')->group(function(){
     Route::get("admin", [DashBoardController::class, "show"]);
     Route::get("admin/dashboard", [DashBoardController::class, "show"]);
@@ -78,10 +82,24 @@ Route::middleware('auth')->group(function(){
 
     //admin module post
     Route::get("admin/post/add", [PostController::class, "add"])->name("post.add");
+    Route::get("admin/post/list", [PostController::class, "list"])->name("post.list");
+    //admin module categories post
+    //add
     Route::get("category/post/add", [CategoriesPostController::class, "add"])->name("category.post.add");
     Route::post("category/post/store", [CategoriesPostController::class, "store"])->name("category.post.store");
+    
+    //show category parent
     Route::get('/category/subcategories/{parentId}', [CategoriesPostController::class, 'getSubcategories']);
     Route::get('/category/subcategories/{parentId}', [CategoriesPostController::class, 'showSubcategories'])->name('category.post.subcategories');
+
+    //update
+    // Route::get('category/edit/{id}', [CategoriesPostController::class, 'edit'])->name('category.post.edit');
+    Route::put('/category/update/{id}', [CategoriesPostController::class, 'update'])->name('category.post.update');
+    Route::get('/category/delete/{id}', [CategoriesPostController::class, 'delete'])->name('category.post.delete');
+
+    //model images
+    Route::get('/admin/image/list', [ImageController::class, 'list'])->name('admin.image.list');
+    Route::post('/admin/image/store', [ImageController::class, 'store'])->name('admin.image.store');
 
 });
 

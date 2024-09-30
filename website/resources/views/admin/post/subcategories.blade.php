@@ -30,20 +30,80 @@
                                         <td>{{ $subcategory->slug }}</td>
                                         <td>{!! $subcategory->desc !!}</td>
                                         <td>
-                                            <a href="#" class="btn btn-success btn-sm rounded-0 text-white btn-submit"
-                                                type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                    class="fa fa-edit"></i></a>
+                                            <button class="btn btn-success btn-sm rounded-0 text-white btn-edit"
+                                                type="button" data-id="{{ $subcategory->id }}"
+                                                data-name="{{ $subcategory->name }}" data-desc="{{ $subcategory->desc }}"
+                                                data-parent_id="{{ $subcategory->parent_id }}" data-toggle="tooltip"
+                                                data-placement="top" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
                                             <a href="#"
-                                                onclick="return confirm('Bạn có chắc xóa thành viên này không')"
+                                                onclick="return confirm('Bạn có chắc xóa danh mục này không?')"
                                                 class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button"
                                                 data-toggle="tooltip" data-placement="top" title="Delete"><i
                                                     class="fa fa-trash"></i></a>
-
                                         </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cập nhật danh mục -->
+        <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog"
+            aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCategoryModalLabel">Cập nhật danh mục</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="close-model">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editCategoryForm" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="category_id" id="category_id">
+                            <div class="form-group">
+                                <label for="edit_name">Tên danh mục</label>
+                                <input type="text" name="name" class="form-control" id="edit_name"
+                                    placeholder="Nhập tên danh mục" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_desc">Mô tả danh mục</label>
+                                <textarea name="desc" class="form-control" id="edit_desc" placeholder="Nhập mô tả danh mục"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_parent_id">Danh mục cha</label>
+                                <select name="parent_id" class="form-control" id="edit_parent_id">
+                                    @php
+                                        $prefix = $prefix ?? ''; // Initialize prefix if not set
+                                    @endphp
+
+                                    <option value="{{ $parentCategory->id }}"
+                                        {{ isset($subcategory) && $subcategory->parent_id == $parentCategory->id ? 'selected' : '' }}>
+                                        {{ $prefix . ' ' . $parentCategory->name }}
+                                    </option>
+
+                                    @if ($parentCategory->children->count() > 0)
+                                        @foreach ($parentCategory->children as $child)
+                                            @include('admin.partials.category-option', [
+                                                'category' => $child,
+                                                'prefix' => $prefix . '--',
+                                            ])
+                                        @endforeach
+                                    @endif
+
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </form>
+
                     </div>
                 </div>
             </div>
