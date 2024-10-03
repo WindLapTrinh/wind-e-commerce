@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoriesPost;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -12,8 +13,9 @@ class PostController extends Controller
     }
     function add()
     {
+        $categories = CategoriesPost::all();
 
-        return view("admin.post.add");
+        return view("admin.post.add", compact('categories'));
     }
     function cat()
     {

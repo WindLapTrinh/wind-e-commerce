@@ -96,7 +96,7 @@
                                     @include('admin.partials.category-option', [
                                         'category' => $category,
                                         'prefix' => '',
-                                    ])
+                                    ]) 
                                 @endforeach
                             </select>
                         </div>

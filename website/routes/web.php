@@ -39,6 +39,8 @@ Route::group(['prefix' => 'laravel-filemanager'], function () {
 Route::resource('images', ImageController::class);
 
 Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('upload.route.name');
+Route::post('/upload/image', [ImageController::class, 'uploadImage'])->name('upload.image');
+
 
 //admin
 Route::middleware('auth')->group(function(){

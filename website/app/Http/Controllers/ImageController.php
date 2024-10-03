@@ -2,35 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Image;
+use App\Models\Post;
 
 class ImageController extends Controller
 {
-    //
-    public function list()
+    public function uploadImage(Request $request)
     {
-        $images = Image::with('user')->get();
-        return view('admin.images.list', compact('images'));
-    }
+        // Kiểm tra nếu có file upload
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'image_url' => 'required|string',
-            'file_size' => 'nullable|integer',
-            'file_name' => 'nullable|string',
-        ]);
+            // Đặt tên file
+            $fileName = time() . '_' . $file->getClientOriginalName();
 
-        // Lưu vào bảng images
-        $image = new Image();
-        $image->url = $validatedData['image_url'];
-        $image->name = $validatedData['file_name'] ?? 'Unnamed';
-        $image->size = $validatedData['file_size'] ?? 0;
-        $image->user_id = auth()->id();
-        $image->save();
+            // Lưu file vào thư mục storage/app/public/images
+            $filePath = $file->storeAs('public/images', $fileName);
 
-        return response()->json(['success' => true]);
+            // Lưu thông tin file vào bảng images
+            $image = Image::create([
+                'file_path' => $filePath
+            ]);
+
+            // Lấy ID của image vừa tạo
+            $imageId = $image->id;
+
+            // Ví dụ thêm post mới và liên kết với ảnh
+            $post = Post::create([
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
+                'id_image' => $imageId
+            ]);
+
+            return redirect()->back()->with('success', 'Ảnh và bài đăng đã được lưu thành công!');
+        }
+
+        return redirect()->back()->with('error', 'Chưa có ảnh nào được tải lên.');
     }
 }

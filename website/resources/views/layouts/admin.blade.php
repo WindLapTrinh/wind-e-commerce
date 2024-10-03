@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="{{ asset('css/admin/style.css') }}">
     <title>Wind Lập Trình</title>
     <!-- Place the first <script> tag in your HTML 's <head> --> 
-    <script src = "https://cdn.tiny.cloud/1/whxvxved7yokt3y3vg4287at086agkhd6tujkl6jumjy6iwy/tinymce/4/tinymce.min.js" referrerpolicy = "origin" >
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+   <script src = "https://cdn.tiny.cloud/1/whxvxved7yokt3y3vg4287at086agkhd6tujkl6jumjy6iwy/tinymce/4/tinymce.min.js" referrerpolicy = "origin" >
     </script>
     <script>
         var editor_config = {
@@ -357,7 +358,6 @@
         });
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         var baseUrl = "{{ url('/') }}";
     </script>
