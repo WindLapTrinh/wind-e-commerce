@@ -361,6 +361,7 @@
     <script>
         var baseUrl = "{{ url('/') }}";
     </script>
+    
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/admin/function.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

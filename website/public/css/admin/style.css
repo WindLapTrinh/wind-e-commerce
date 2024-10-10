@@ -3,9 +3,9 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Initial box-shadow */  
 }
-.modal-content{
+/* .modal-content{
     width: 995px !important;
-}
+} */
 .modal-header{
     background-color: #4e73df;
     color: white;

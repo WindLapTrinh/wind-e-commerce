@@ -14,11 +14,11 @@ class Post extends Model
 
     // Khai báo các trường có thể điền dữ liệu
     protected $fillable = [
-        'post_title',
-        'post_slug',
-        'post_excerpt',
-        'post_content',
-        'post_status',
+        'title',
+        'slug',
+        'excerpt',
+        'content',
+        'status',
         'user_id',
         'category_id',
         'image_id'
@@ -28,5 +28,11 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo(CategoriesPost::class, 'category_id');
+    }
+
+    //get image tbale posst
+    public function image()
+    {
+        return $this->belongsTo(Image::class, 'image_id', 'id');
     }
 }

@@ -37,7 +37,7 @@
                                         <td>{{ $category->slug }}</td>
                                         <td>{!! $category->desc !!}</td>
                                         <td>
-                                            <button class="btn btn-success btn-sm rounded-0 text-white btn-edit"
+                                            <button class="btn btn-success btn-sm rounded-0 text-white btn-edit-category"
                                                 type="button" data-id="{{ $category->id }}"
                                                 data-name="{{ $category->name }}" data-desc="{{ $category->desc }}"
                                                 data-parent_id="{{ $category->parent_id }}" data-toggle="tooltip"

@@ -83,8 +83,13 @@ Route::middleware('auth')->group(function(){
 
 
     //admin module post
-    Route::get("admin/post/add", [PostController::class, "add"])->name("post.add");
     Route::get("admin/post/list", [PostController::class, "list"])->name("post.list");
+    Route::get("admin/post/add", [PostController::class, "add"])->name("post.add");
+    Route::post("admin/post/store", [PostController::class, "store"])->name("post.store");
+    Route::get("admin/post/edit", [PostController::class, "edit"])->name("post.edit");
+    Route::put("admin/post/update", [PostController::class, "update"])->name("post.update");
+    Route::get("admin/post/delete", [PostController::class, "delete"])->name("post.delete");
+
     //admin module categories post
     //add
     Route::get("category/post/add", [CategoriesPostController::class, "add"])->name("category.post.add");

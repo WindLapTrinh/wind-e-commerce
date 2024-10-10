@@ -30,7 +30,7 @@ function showSubcategories(parentId) {
 // Update this part of the JavaScript code
 $(document).ready(function () {
     // Bắt sự kiện click vào nút Edit
-    $(".btn-edit").on("click", function () {
+    $(".btn-edit-category").on("click", function () {
         var categoryId = $(this).data("id");
         var categoryName = $(this).data("name");
         var categoryDesc = $(this).data("desc");
@@ -47,6 +47,38 @@ $(document).ready(function () {
 
         // Hiển thị modal
         $("#editCategoryModal").modal("show");
+    });
+
+    // Bắt sự kiện click vào nút Edit cho bài viết
+    $(".btn-edit-post").on("click", function () {
+        var postId = $(this).data("id");
+        var postTitle = $(this).data("title");
+        var postContent = $(this).data("content");
+        var postCategory = $(this).data("category");
+        var postStatus = $(this).data("status");
+        let imageUrl = $(this).data("image");
+        // Điền dữ liệu vào modal bài viết
+        $("#post_id").val(postId);
+        $("#post_title").val(postTitle);
+        $("#post_content").val(postContent);
+        $("#post_category").val(postCategory);
+
+        // Hiển thị ảnh hiện tại nếu có
+        if (imageUrl) {
+            $("#current_image").attr("src", imageUrl).show();
+        } else {
+            $("#current_image").hide();
+        }
+
+        //Set status radio button
+        if (postStatus === "published") {
+            $("#status_published").prop("checked", true);
+        } else {
+            $("#status_pending").prop("checked", true);
+        }
+
+        // Hiển thị modal bài viết
+        $("#editModal").modal("show");
     });
 });
 
@@ -78,14 +110,13 @@ tinymce.init({
 
 // save images
 // Giả sử bạn đã có một sự kiện click cho hình ảnh
-document.querySelectorAll('.file-item').forEach(item => {
-    item.addEventListener('click', function() {
-        const imageUrl = this.getAttribute('data-image-url'); // Thay thế bằng thuộc tính thực tế chứa URL
-        const fileName = this.getAttribute('data-file-name'); // Tương tự
-        const fileSize = this.getAttribute('data-file-size'); // Tương tự
-        
+document.querySelectorAll(".file-item").forEach((item) => {
+    item.addEventListener("click", function () {
+        const imageUrl = this.getAttribute("data-image-url"); // Thay thế bằng thuộc tính thực tế chứa URL
+        const fileName = this.getAttribute("data-file-name"); // Tương tự
+        const fileSize = this.getAttribute("data-file-size"); // Tương tự
+
         // Gọi hàm selectImage khi hình ảnh được chọn
         selectImage(imageUrl, fileName, fileSize);
     });
 });
-
