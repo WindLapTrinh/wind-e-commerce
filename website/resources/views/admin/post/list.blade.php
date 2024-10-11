@@ -109,9 +109,8 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form id="editPostForm" action="{{ route('post.update') }}" method="POST">
+                <form id="editPostForm" action="{{ route('post.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
                     <input type="hidden" name="post_id" id="post_id">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editModalLabel">Chỉnh sửa bài viết</h5>
@@ -145,12 +144,11 @@
                             <!-- Hiển thị ảnh hiện tại nếu có -->
                             <div class="mt-2">
                                 <label class="col-12">Ảnh hiện tại:</label>
-                                <img src="" alt="Ảnh hiện tại" class="img-thumbnail" width="150"
+                                <img src="" alt="Ảnh hiện tại" class="img-thumbnail" id="current_image" width="150"
                                     style="display: none;">
                             </div>
                             <label for="image">Chọn ảnh mới (tùy chọn)</label>
                             <input type="file" name="image" id="image" class="form-control-file">
-
 
                         </div>
 
@@ -177,81 +175,6 @@
                         <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                     </div>
                 </form>
-            </div>
-        </div><!-- Modal chỉnh sửa bài viết -->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form id="editPostForm" action="{{ route('post.update') }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="post_id" id="post_id">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Chỉnh sửa bài viết</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="post_title">Tiêu đề</label>
-                                <input type="text" name="title" class="form-control" id="post_title" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="post_content">Nội dung</label>
-                                <textarea class="form-control" name="content" id="post_content"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="post_category">Danh mục</label>
-                                <select name="category_id" class="form-control" id="post_category">
-                                    <option value="0">Không có</option>
-                                    @foreach ($categories as $category)
-                                        @include('admin.partials.category-option', [
-                                            'category' => $category,
-                                            'prefix' => '',
-                                        ])
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Hiển thị ảnh hiện tại nếu có -->
-                            <div class="form-group">
-                                <label for="image">Ảnh hiện tại</label>
-                                <div class="mt-2">
-                                    <img src="" alt="Ảnh hiện tại" class="img-thumbnail" id="current_image"
-                                        width="150" style="display: none;">
-                                </div>
-                                <label for="image">Chọn ảnh mới (tùy chọn)</label>
-                                <input type="file" name="image" id="image" class="form-control-file">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="status">Trạng thái</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="status_pending"
-                                        value="pending">
-                                    <label class="form-check-label" for="status_pending">Chờ duyệt</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="status_published"
-                                        value="published">
-                                    <label class="form-check-label" for="status_published">Công khai</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
  @endsection

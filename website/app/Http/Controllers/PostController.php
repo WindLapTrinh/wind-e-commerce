@@ -70,35 +70,54 @@ class PostController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $post = Post::find($request->post_id);
+{
+    $post = Post::find($request->post_id);
     
-        // Nếu có upload ảnh mới
-        if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu có
-            if ($post->image && file_exists(public_path($post->image->url))) {
-                unlink(public_path($post->image->url));  // Xóa ảnh từ public/images
-                $post->image->delete();  // Xóa bản ghi hình ảnh từ database
+    // Nếu có upload ảnh mới
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        
+        // Kiểm tra xem tệp có hợp lệ hay không
+        if ($image->isValid()) {
+            $imageSize = $image->getSize();
+            $imageName = time() . '-' . $image->getClientOriginalName();
+            
+            // Lưu tệp vào thư mục 'public/images'
+            $image->move(public_path('images'), $imageName);
+            
+            // Xóa ảnh cũ từ hệ thống
+            if ($post->image) {
+                // Xóa tệp ảnh cũ nếu tồn tại
+                Storage::delete($post->image->url);
+                // Xóa bản ghi ảnh cũ trong bảng images
+                $post->image->delete();
             }
-    
-            // Lưu ảnh mới vào public/images
-            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path('images'), $imageName);
-    
-            // Lưu đường dẫn ảnh mới vào DB
-            $image = Image::create(['url' => 'images/' . $imageName]);
-            $post->image_id = $image->id;
+
+            // Tạo bản ghi trong bảng images cho ảnh mới
+            $imageModel = new Image();
+            $imageModel->url = 'images/' . $imageName;
+            $imageModel->name = $imageModel->url;
+            $imageModel->size = $imageSize;
+            $imageModel->user_id = auth()->id();
+            $imageModel->save();
+
+            // Cập nhật image_id trong bài viết
+            $post->image_id = $imageModel->id;
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Tệp ảnh không hợp lệ.']);
         }
-    
-        // Cập nhật các thông tin khác của bài viết
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->category_id = $request->category_id;
-        $post->status = $request->status;
-        $post->save();
-    
-        return redirect()->route('post.list')->with('status', 'Cập nhật bài viết thành công!');
-    }    
+    }
+
+    // Cập nhật các thông tin khác của bài viết
+    $post->title = $request->title;
+    $post->content = $request->content;
+    $post->category_id = $request->category_id;
+    $post->status = $request->status;
+
+    $post->save(); // Lưu các thay đổi
+
+    return redirect()->route('post.list')->with('status', 'Bài viết đã được cập nhật thành công.');
+}
 
     function delete() {}
 
