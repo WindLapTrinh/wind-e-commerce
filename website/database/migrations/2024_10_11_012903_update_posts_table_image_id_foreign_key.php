@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            //
+            $table->unsignedBigInteger('image_id')->nullable()->change();
+            $table->foreign('image_id')->references('id')->on('images')->onDelete('set null');
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            //
+            $table->unsignedBigInteger('image_id')->nullable(false)->change();
+            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
         });
     }
 };
