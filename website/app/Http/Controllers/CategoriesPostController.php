@@ -48,7 +48,7 @@ class CategoriesPostController extends Controller
             'parent_id' => $parent_id,
         ]);
 
-        return redirect()->route('category.post.add')->with('status', 'Danh mục đã được thêm!');
+        return redirect()->route('category.post.list')->with('status', 'Danh mục đã được thêm!');
     }
 
     //update

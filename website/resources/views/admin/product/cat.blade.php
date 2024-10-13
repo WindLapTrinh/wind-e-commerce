@@ -32,7 +32,7 @@
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td><a class="text-setting"
-                                                href="{{ $category->children->count() > 0 ? route('category.post.subcategories', $category->id) : "#" }}">{{ $category->name }}</a>
+                                                href="{{ $category->children->count() > 0 ? route('category.product.subcategories', $category->id) : "#" }}">{{ $category->name }}</a>
                                         </td>
                                         <td>{{ $category->slug }}</td>
                                         <td>{!! $category->desc !!}</td>
@@ -76,7 +76,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('category.post.store') }}" method="POST">
+                    <form action="{{ route('category.product.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="name">Tên danh mục</label>

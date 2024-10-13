@@ -19,6 +19,17 @@ class CategoriesPost extends Model
         'parent_id'
     ];
 
+    public function children()
+    {
+        return $this->hasMany(CategoriesPost::class, 'parent_id');
+    }
+
+
+    public function parent()
+    {
+        return $this->belongsTo(CategoriesPost::class, 'parent_id');
+    }
+
     public function getIndentedNameAttribute()
     {
         // Đếm số cấp độ của danh mục hiện tại
@@ -41,16 +52,5 @@ class CategoriesPost extends Model
         }
 
         return $level;
-    }
-
-    public function children()
-    {
-        return $this->hasMany(CategoriesPost::class, 'parent_id');
-    }
-
-
-    public function parent()
-    {
-        return $this->belongsTo(CategoriesPost::class, 'parent_id');
     }
 }

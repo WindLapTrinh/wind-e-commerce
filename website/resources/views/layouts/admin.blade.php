@@ -265,7 +265,7 @@
                     <ul class="sub-menu">
                         <li class="chilldent-menu-top"><a href="{{ url('admin/product/add') }}">Thêm mới</a></li>
                         <li><a href="{{ url('admin/product/list') }}">Danh sách</a></li>
-                        <li class="chilldent-menu-bottom"><a href="{{ url('admin/product/cat/list') }}">Danh
+                        <li class="chilldent-menu-bottom"><a href="{{ url('category/product/list') }}">Danh
                                 mục</a></li>
                     </ul>
                 </li>

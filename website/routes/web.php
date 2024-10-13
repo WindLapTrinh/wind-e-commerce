@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CategoriesPostController;
+use App\Http\Controllers\CategoriesProductController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Auth;
@@ -81,8 +83,16 @@ Route::middleware('auth')->group(function(){
     Route::post("admin/role/update/{role}", [RoleController::class, "update"])->name("role.update")->can('role.edit');
     Route::get("admin/role/delete/{role}", [RoleController::class, "delete"])->name("role.delete")->can('role.delete');
 
+    //module categories post
+    //add
+    Route::get("category/post/list", [CategoriesPostController::class, "list"])->name("category.post.list");
+    Route::post("category/post/store", [CategoriesPostController::class, "store"])->name("category.post.store");
+    //update
+    // Route::get('category/edit/{id}', [CategoriesPostController::class, 'edit'])->name('category.post.edit');
+    Route::put('/category/post/update/{id}', [CategoriesPostController::class, 'update'])->name('category.post.update');
+    Route::get('/category/post/delete/{id}', [CategoriesPostController::class, 'delete'])->name('category.post.delete');
 
-    //admin module post
+    //module post
     Route::get("admin/post/list", [PostController::class, "list"])->name("post.list");
     Route::get("admin/post/add", [PostController::class, "add"])->name("post.add");
     Route::post("admin/post/store", [PostController::class, "store"])->name("post.store");
@@ -91,19 +101,18 @@ Route::middleware('auth')->group(function(){
     Route::get("admin/post/delete/{id}", [PostController::class, "delete"])->name("post.delete");
     Route::get("admin/post/action", [PostController::class, "action"])->name("post.action");
 
-    //admin module categories post
-    //add
-    Route::get("category/post/list", [CategoriesPostController::class, "list"])->name("category.post.list");
-    Route::post("category/post/store", [CategoriesPostController::class, "store"])->name("category.post.store");
-    
-    //show category post parent
+    //category post parent
     // Route::get('/category/post/subcategories/{parentId}', [CategoriesPostController::class, 'getSubcategories']);
     Route::get('/category/post/subcategories/{parentId}', [CategoriesPostController::class, 'showSubcategories'])->name('category.post.subcategories');
 
-    //update
-    // Route::get('category/edit/{id}', [CategoriesPostController::class, 'edit'])->name('category.post.edit');
-    Route::put('/category/post/update/{id}', [CategoriesPostController::class, 'update'])->name('category.post.update');
-    Route::get('/category/post/delete/{id}', [CategoriesPostController::class, 'delete'])->name('category.post.delete');
+
+    //molude categories product
+    Route::get("category/product/list", [CategoriesProductController::class, "list"])->name("category.product.list");
+    Route::post("category/product/store", [CategoriesProductController::class, "store"])->name("category.product.store");
+    Route::get('category/product/subcategories/{parentId}', [CategoriesProductController::class, 'showSubcategories'])->name('category.product.subcategories');
+
+    //molude product
+    Route::get("admin/product/add", [ProductController::class, "add"])->name("product.add");
 
     //model images
     Route::get('/admin/image/list', [ImageController::class, 'list'])->name('admin.image.list');
