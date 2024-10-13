@@ -111,7 +111,7 @@ class AdminUserController extends Controller
             foreach ($list_check as $k => $id) {
                 if (Auth::id() == $id) {
                     unset($list_check[$k]);
-                }
+                } 
             }
         }
         if (!empty($list_check)) {

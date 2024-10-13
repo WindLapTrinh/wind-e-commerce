@@ -12,95 +12,92 @@
                 <h5 class="m-0 ">Danh sách bài viết</h5>
                 <div class="form-search form-inline">
                     <form action="#">
-                        <input type="text" class="form-control form-search" placeholder="Tìm kiếm">
+                        <input type="" class="form-control form-search" name="keyword"
+                            value="{{ $request->input('keyword') }}" placeholder="Tìm kiếm">
                         <input type="submit" name="btn-search" value="Tìm kiếm" class="btn btn-primary">
                     </form>
                 </div>
             </div>
             <div class="card-body">
                 <div class="analytic">
-                    <a href="#" class="text-primary">Trạng thái 1<span class="text-muted">(10)</span></a>
-                    <a href="#" class="text-primary">Trạng thái 2<span class="text-muted">(5)</span></a>
-                    <a href="#" class="text-primary">Trạng thái 3<span class="text-muted">(20)</span></a>
+                    <a href="{{ $request->fullUrlWithQuery(['status' => 'active']) }}" class="text-primary">Kích hoạt<span
+                            class="text-muted">({{ $count[0] }})</span></a>
+                    <a href="{{ $request->fullUrlWithQuery(['status' => 'trash']) }}" class="text-primary">Vô hiệu hóa<span
+                            class="text-muted">({{ $count[1] }})</span></a>
                 </div>
-                <div class="form-action form-inline py-3">
-                    <select class="form-control mr-1" id="">
-                        <option>Chọn</option>
-                        <option>Tác vụ 1</option>
-                        <option>Tác vụ 2</option>
-                    </select>
-                    <input type="submit" name="btn-search" value="Áp dụng" class="btn btn-primary">
-                </div>
-                <table class="table table-striped table-checkall">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <input name="checkall" type="checkbox">
-                            </th>
-                            <th scope="col">#</th>
-                            <th scope="col">Ảnh</th>
-                            <th scope="col">Tiêu đề</th>
-                            <th scope="col">Danh mục</th>
-                            <th scope="col">Ngày tạo</th>
-                            <th scope="col">Tác vụ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($posts as $post)
+                <form action="{{ url('/admin/post/action') }}" method="GET">
+                    <div class="form-action form-inline py-3">
+                        <select class="form-control mr-1" id="" name="act">
+                            <option>Chọn</option>
+                            @foreach ($list_act as $k => $act)
+                                <option value="{{$k}}">{{$act}}</option>
+                            @endforeach
+                        </select>
+                        <input type="submit" name="btn-search" value="Áp dụng" class="btn btn-primary">
+                    </div>
+                    <table class="table table-striped table-checkall">
+                        <thead>
                             <tr>
-                                <td>
-                                    <input type="checkbox">
-                                </td>
-                                <td scope="row">{{ $loop->iteration }}</td>
-                                <td>
-                                    @if ($post->image)
-                                        <img src="{{ asset($post->image->url) }}" alt="" width="80"
-                                            height="80">
-                                    @else
-                                        <img src="http://via.placeholder.com/80X80" alt="">
-                                    @endif
-                                </td>
-                                <td><a href="">{{ $post->title }}</a></td>
-                                <td>{{ $post->category->name ?? 'Không có' }}</td>
-                                <td>{{ $post->created_at->format('d/m/Y') }}</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm rounded-0 text-white btn-edit-post"
-                                        data-id="{{ $post->id }}" data-title="{{ $post->title }}"
-                                        data-category="{{ $post->category_id }}" data-content="{{ $post->content }}"
-                                        data-image="{{ $post->image ? asset($post->image->url) : '' }}" type="button"
-                                        data-toggle="tooltip" data-placement="top" title="Edit">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-
-                                    <a href="{{ route('post.delete', $post->id) }}"
-                                        onclick="return confirm('Bạn có chắc chắn xóa vai trò này không')"
-                                        class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button"
-                                        data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                            class="fa fa-trash"></i></a>
-                                </td>
+                                <th scope="col">
+                                    <input name="checkall" type="checkbox">
+                                </th>
+                                <th scope="col">#</th>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Tiêu đề</th>
+                                <th scope="col">Danh mục</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Tác vụ</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">Trước</span>
-                                <span class="sr-only">Sau</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                        </thead>
+                        <tbody>
+                            @if ($posts->total() > 0)
+                                @foreach ($posts as $post)
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="list_check[]" value="{{ $post->id }}">
+                                        </td>
+                                        <td scope="row">{{ $loop->iteration }}</td>
+                                        <td>
+                                            @if ($post->image)
+                                                <img src="{{ asset($post->image->url) }}" alt="" width="80"
+                                                    height="80">
+                                            @else
+                                                <img src="http://via.placeholder.com/80X80" alt="">
+                                            @endif
+                                        </td>
+                                        <td><a href="" class="title-post">{{ $post->title }}</a></td>
+                                        <td>{{ $post->category->name ?? 'Không có' }}</td>
+                                        <td>{{ $post->created_at->format('d/m/Y') }}</td>
+                                        <td>
+                                            <button
+                                                class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit-post"
+                                                data-id="{{ $post->id }}" data-title="{{ $post->title }}"
+                                                data-category="{{ $post->category_id }}"
+                                                data-content="{{ $post->content }}"
+                                                data-image="{{ $post->image ? asset($post->image->url) : '' }}"
+                                                type="button" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+
+                                            <a href="{{ route('post.delete', $post->id) }}"
+                                                onclick="return confirm('Bạn có chắc chắn xóa bài viết này không')"
+                                                class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                    class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="7">Hiện tại chưa có thông tin bài viết nào !</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </form>
+                <div class="d-flex justify-content-center">
+                    {{ $posts->links() }}
+                </div>
             </div>
         </div>
     </div>
@@ -144,8 +141,8 @@
                             <!-- Hiển thị ảnh hiện tại nếu có -->
                             <div class="mt-2">
                                 <label class="col-12">Ảnh hiện tại:</label>
-                                <img src="" alt="Ảnh hiện tại" class="img-thumbnail" id="current_image" width="150"
-                                    style="display: none;">
+                                <img src="" alt="Ảnh hiện tại" class="img-thumbnail" id="current_image"
+                                    width="150" style="display: none;">
                             </div>
                             <label for="image">Chọn ảnh mới (tùy chọn)</label>
                             <input type="file" name="image" id="image" class="form-control-file">
@@ -177,4 +174,5 @@
                 </form>
             </div>
         </div>
- @endsection
+    </div>
+@endsection

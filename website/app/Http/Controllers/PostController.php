@@ -13,13 +13,39 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     //
-    function list()
+    function list(Request $request)
     {
-        $posts = Post::with(['category', 'image'])->get();
+        $posts = Post::with(['category', 'image'])->paginate(1);
         $categories = CategoriesPost::where('parent_id', 0)->get();
 
-        return view('admin.post.list', compact('posts', 'categories'));
+        $status = $request->input('status');
+
+        $list_act = [
+            'delete' => 'Xóa tạm thời'
+        ];
+
+        if ($status == "trash") {
+            $list_act = [
+                'restore' => 'Khôi phục',
+                'forceDelete' => 'Xóa vĩnh viễn'
+            ];
+            $posts = Post::onlyTrashed()->paginate(10);
+        } else {
+            $keyword = "";
+            if ($request->input('keyword')) {
+                $keyword = $request->input('keyword');
+            }
+            $users = Post::where("title", 'LIKE', "%{$keyword}%")->paginate(10);
+        }
+
+        $const_post_active = Post::count();
+        $const_post_trah = Post::onlyTrashed()->count();
+
+        $count = [$const_post_active, $const_post_trah];
+
+        return view('admin.post.list', compact('posts', 'categories', 'count', 'request', 'list_act'));
     }
+
     function add()
     {
         $categories = CategoriesPost::where('parent_id', 0)->get();
@@ -65,61 +91,119 @@ class PostController extends Controller
         $post->image_id = $imageModel->id; // Gán ID của ảnh
 
         $post->save();
-
         return redirect()->route('post.list')->with('status', 'Bài viết đã được thêm thành công');
     }
 
     public function update(Request $request)
-{
-    $post = Post::find($request->post_id);
-    
-    // Nếu có upload ảnh mới
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        
-        // Kiểm tra xem tệp có hợp lệ hay không
-        if ($image->isValid()) {
-            $imageSize = $image->getSize();
-            $imageName = time() . '-' . $image->getClientOriginalName();
-            
-            // Lưu tệp vào thư mục 'public/images'
-            $image->move(public_path('images'), $imageName);
-            
-            // Xóa ảnh cũ từ hệ thống
-            if ($post->image) {
-                // Xóa tệp ảnh cũ nếu tồn tại
-                Storage::delete($post->image->url);
-                // Xóa bản ghi ảnh cũ trong bảng images
-                $post->image->delete();
+    {
+        $post = Post::find($request->post_id);
+
+        // Nếu có upload ảnh mới
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Kiểm tra xem tệp có hợp lệ hay không
+            if ($image->isValid()) {
+                $imageSize = $image->getSize();
+                $imageName = time() . '-' . $image->getClientOriginalName();
+
+                // Lưu tệp vào thư mục 'public/images'
+                $image->move(public_path('images'), $imageName);
+
+                // Xóa ảnh cũ từ hệ thống
+                if ($post->image) {
+                    // Xóa tệp ảnh cũ nếu tồn tại
+                    $oldImagePath = public_path($post->image->url);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                    // Storage::delete($post->image->url);
+                    // Xóa bản ghi ảnh cũ trong bảng images
+                    $post->image->delete();
+                }
+
+                // Tạo bản ghi trong bảng images cho ảnh mới
+                $imageModel = new Image();
+                $imageModel->url = 'images/' . $imageName;
+                $imageModel->name = $imageModel->url;
+                $imageModel->size = $imageSize;
+                $imageModel->user_id = auth()->id();
+                $imageModel->save();
+
+                // Cập nhật image_id trong bài viết
+                $post->image_id = $imageModel->id;
+            } else {
+                return redirect()->back()->withErrors(['error' => 'Tệp ảnh không hợp lệ.']);
             }
-
-            // Tạo bản ghi trong bảng images cho ảnh mới
-            $imageModel = new Image();
-            $imageModel->url = 'images/' . $imageName;
-            $imageModel->name = $imageModel->url;
-            $imageModel->size = $imageSize;
-            $imageModel->user_id = auth()->id();
-            $imageModel->save();
-
-            // Cập nhật image_id trong bài viết
-            $post->image_id = $imageModel->id;
-        } else {
-            return redirect()->back()->withErrors(['error' => 'Tệp ảnh không hợp lệ.']);
         }
+
+        // Cập nhật các thông tin khác của bài viết
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->category_id = $request->category_id;
+        $post->status = $request->status;
+
+        $post->save(); // Lưu các thay đổi
+
+        return redirect()->route('post.list')->with('status', 'Bài viết đã được cập nhật thành công.');
     }
 
-    // Cập nhật các thông tin khác của bài viết
-    $post->title = $request->title;
-    $post->content = $request->content;
-    $post->category_id = $request->category_id;
-    $post->status = $request->status;
+    function delete($id)
+    {
+        $post = Post::find($id);
+        if (!$post) {
+            return redirect()->route('post.list')->with('status', 'Bài viết không tồn tại.');
+        }
 
-    $post->save(); // Lưu các thay đổi
+        if ($post->image) {
+            $imagePath = public_path($post->image->url);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+            $post->image->delete();
+        }
+        // Xóa bài viết
+        $post->delete();
 
-    return redirect()->route('post.list')->with('status', 'Bài viết đã được cập nhật thành công.');
-}
+        return redirect()->route('post.list')->with('status', 'Bài viết đã được xóa thành công.');
+    }
 
-    function delete() {}
+    function action(Request $request)
+    {
+        $list_check = $request->input('list_check');
+        if ($list_check) {
+            foreach ($list_check as $k => $id) {
+                $post = Post::find($id);
+                // Assuming you are checking if this is the authenticated user's post
+                if ($post && auth()->id() == $post->id) {
+                    unset($list_check[$k]); // Don't allow the user to delete their own post
+                }
+            }
+        }
+
+        if (!empty($list_check)) {
+            $act = $request->input('act');
+            if ($act === "delete") {
+                Post::destroy($list_check);
+                return redirect("admin/post/list")->with('status', 'Bạn đã xóa thành công');
+            }
+            if ($act === "restore") {
+                Post::withTrashed()
+                    ->whereIn('id', $list_check)
+                    ->restore();
+                return redirect('admin/post/list')->with('status', 'Bạn đã khôi phục thành công');
+            }
+            if ($act === "forceDelete") {
+                Post::withTranshed()
+                    ->whereIn('id', $list_check)
+                    ->forceDelete();
+                return redirect('admin/post/list')->with('status', 'Bạn đã xóa vĩnh viễn thành công');
+            }
+            return redirect('admin/post/list')->with('status', 'Bạn không thể thao tác trên tài khoản của bạn !');
+        } else {
+            return redirect('admin/post/list')->with('status', 'Bạn cần chọn phần tử thực hiện !');
+        }
+    }
 
     public function uploadImage(Request $request)
     {

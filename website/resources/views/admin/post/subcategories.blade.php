@@ -28,9 +28,9 @@
                                                 href="{{ $subcategory->children->count() > 0 ? route('category.post.subcategories', $subcategory->id) : '#' }}">{{ $subcategory->name }}</a>
                                         </td>
                                         <td>{{ $subcategory->slug }}</td>
-                                        <td>{!! $subcategory->desc !!}</td>
+                                        <td class="w-100" style="width: 60px">{!! $subcategory->desc !!}</td>
                                         <td>
-                                            <button class="btn btn-success btn-sm rounded-0 text-white btn-edit"
+                                            <button class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit"
                                                 type="button" data-id="{{ $subcategory->id }}"
                                                 data-name="{{ $subcategory->name }}" data-desc="{{ $subcategory->desc }}"
                                                 data-parent_id="{{ $subcategory->parent_id }}" data-toggle="tooltip"

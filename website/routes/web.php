@@ -88,7 +88,8 @@ Route::middleware('auth')->group(function(){
     Route::post("admin/post/store", [PostController::class, "store"])->name("post.store");
     Route::get("admin/post/edit", [PostController::class, "edit"])->name("post.edit");
     Route::post("admin/post/update", [PostController::class, "update"])->name("post.update");
-    Route::get("admin/post/delete", [PostController::class, "delete"])->name("post.delete");
+    Route::get("admin/post/delete/{id}", [PostController::class, "delete"])->name("post.delete");
+    Route::get("admin/post/action", [PostController::class, "action"])->name("post.action");
 
     //admin module categories post
     //add
