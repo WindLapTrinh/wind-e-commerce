@@ -93,11 +93,11 @@ Route::middleware('auth')->group(function(){
 
     //admin module categories post
     //add
-    Route::get("category/post/add", [CategoriesPostController::class, "add"])->name("category.post.add");
+    Route::get("category/post/list", [CategoriesPostController::class, "list"])->name("category.post.list");
     Route::post("category/post/store", [CategoriesPostController::class, "store"])->name("category.post.store");
     
     //show category post parent
-    Route::get('/category/post/subcategories/{parentId}', [CategoriesPostController::class, 'getSubcategories']);
+    // Route::get('/category/post/subcategories/{parentId}', [CategoriesPostController::class, 'getSubcategories']);
     Route::get('/category/post/subcategories/{parentId}', [CategoriesPostController::class, 'showSubcategories'])->name('category.post.subcategories');
 
     //update

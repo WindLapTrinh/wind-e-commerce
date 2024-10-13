@@ -8,28 +8,26 @@ use Illuminate\Support\Str;
 
 class CategoriesPostController extends Controller
 {
-    //add
-    function add()
+
+    function list()
     {
         $categories = CategoriesPost::where('parent_id', 0)->get();
 
         return view('admin.post.cat', compact('categories'));
     }
 
-    function getSubcategories($parentId)
-    {
-        $subcategories = CategoriesPost::where('parent_id', $parentId)->get();
-
-        return response()->json($subcategories);
-    }
-
     function showSubcategories($parentId)
     {
+        // Lấy danh mục cha theo ID
         $parentCategory = CategoriesPost::findOrFail($parentId);
 
+        // Lấy tất cả danh mục con của danh mục cha
         $subcategories = CategoriesPost::where('parent_id', $parentId)->get();
 
-        return view('admin.post.subcategories', compact('parentCategory', 'subcategories'));
+        // Lấy toàn bộ danh mục theo dạng cây phân cấp
+        $allCategories = CategoriesPost::where('parent_id', 0)->with('children')->get();
+
+        return view('admin.post.subcategories', compact('parentCategory', 'subcategories', 'allCategories'));
     }
 
     function store(Request $request)

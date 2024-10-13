@@ -28,16 +28,17 @@
                                                 href="{{ $subcategory->children->count() > 0 ? route('category.post.subcategories', $subcategory->id) : '#' }}">{{ $subcategory->name }}</a>
                                         </td>
                                         <td>{{ $subcategory->slug }}</td>
-                                        <td class="w-100" style="width: 60px">{!! $subcategory->desc !!}</td>
+                                        <td>{!! $subcategory->desc !!}</td>
                                         <td>
-                                            <button class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit"
+                                            <button
+                                                class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit-category"
                                                 type="button" data-id="{{ $subcategory->id }}"
                                                 data-name="{{ $subcategory->name }}" data-desc="{{ $subcategory->desc }}"
                                                 data-parent_id="{{ $subcategory->parent_id }}" data-toggle="tooltip"
                                                 data-placement="top" title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </button>
-                                            <a href="#"
+                                            <a href="{{ route('category.post.delete', $subcategory->id) }}"
                                                 onclick="return confirm('Bạn có chắc xóa danh mục này không?')"
                                                 class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button"
                                                 data-toggle="tooltip" data-placement="top" title="Delete"><i
@@ -81,26 +82,13 @@
                             <div class="form-group">
                                 <label for="edit_parent_id">Danh mục cha</label>
                                 <select name="parent_id" class="form-control" id="edit_parent_id">
-                                    @php
-                                        $prefix = $prefix ?? ''; // Initialize prefix if not set
-                                    @endphp
-
-                                    <option value="{{ $parentCategory->id }}"
-                                        {{ isset($subcategory) && $subcategory->parent_id == $parentCategory->id ? 'selected' : '' }}>
-                                        {{ $prefix . ' ' . $parentCategory->name }}
-                                    </option>
-
-                                    @if ($parentCategory->children->count() > 0)
-                                        @foreach ($parentCategory->children as $child)
-                                            @include('admin.partials.category-option', [
-                                                'category' => $child,
-                                                'prefix' => $prefix . '--',
-                                            ])
-                                        @endforeach
-                                    @endif
-
+                                    <option value="0">Không có danh mục cha</option> 
+                                    @foreach ($allCategories as $category)
+                                        @include('admin.partials.category-option', ['category' => $category, 'prefix' => ''])
+                                    @endforeach
                                 </select>
-                            </div>
+                            </div>                            
+
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
                         </form>
 

@@ -42,7 +42,7 @@ $(document).ready(function () {
         $("#editCategoryModal #edit_parent_id").val(categoryParentId);
 
         // Dynamically build the form action with the base URL and category ID
-        var formAction = baseUrl + "/category/update/" + categoryId;
+        var formAction = baseUrl + "/category/post/update/" + categoryId;
         $("#editCategoryForm").attr("action", formAction);
 
         // Hiển thị modal
