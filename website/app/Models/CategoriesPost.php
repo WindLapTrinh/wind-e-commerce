@@ -9,8 +9,6 @@ class CategoriesPost extends Model
 {
     use HasFactory;
 
-    use HasFactory;
-
     protected $table = 'categories_post';
 
     protected $fillable = [
@@ -21,7 +19,6 @@ class CategoriesPost extends Model
         'parent_id'
     ];
 
-    // Trong Model Category.php
     public function getIndentedNameAttribute()
     {
         // Đếm số cấp độ của danh mục hiện tại

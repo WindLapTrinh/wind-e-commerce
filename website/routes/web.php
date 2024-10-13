@@ -96,14 +96,14 @@ Route::middleware('auth')->group(function(){
     Route::get("category/post/add", [CategoriesPostController::class, "add"])->name("category.post.add");
     Route::post("category/post/store", [CategoriesPostController::class, "store"])->name("category.post.store");
     
-    //show category parent
-    Route::get('/category/subcategories/{parentId}', [CategoriesPostController::class, 'getSubcategories']);
-    Route::get('/category/subcategories/{parentId}', [CategoriesPostController::class, 'showSubcategories'])->name('category.post.subcategories');
+    //show category post parent
+    Route::get('/category/post/subcategories/{parentId}', [CategoriesPostController::class, 'getSubcategories']);
+    Route::get('/category/post/subcategories/{parentId}', [CategoriesPostController::class, 'showSubcategories'])->name('category.post.subcategories');
 
     //update
     // Route::get('category/edit/{id}', [CategoriesPostController::class, 'edit'])->name('category.post.edit');
-    Route::put('/category/update/{id}', [CategoriesPostController::class, 'update'])->name('category.post.update');
-    Route::get('/category/delete/{id}', [CategoriesPostController::class, 'delete'])->name('category.post.delete');
+    Route::put('/category/post/update/{id}', [CategoriesPostController::class, 'update'])->name('category.post.update');
+    Route::get('/category/post/delete/{id}', [CategoriesPostController::class, 'delete'])->name('category.post.delete');
 
     //model images
     Route::get('/admin/image/list', [ImageController::class, 'list'])->name('admin.image.list');
