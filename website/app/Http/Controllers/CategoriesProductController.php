@@ -33,6 +33,37 @@ class CategoriesProductController extends Controller
         return redirect()->route('category.product.list')->with('status', 'Danh mục đã được thêm !');
     }
 
+    function update(Request $request , $id){
+        $category = CategoriesProduct::findOrFail($id);
+        $category->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'desc' => $request->input('desc'),
+            'parent_id' => $request->input('parent_id')
+        ]);
+
+        return redirect()->route('category.product.list')->with('status', 'Danh mục đã cập nhập thông tin thành công');
+    }
+
+    function delete($id){
+        $category = CategoriesProduct::find($id);
+        if($category){
+            $this->deleteSubcategories($category->id);
+            $category->delete();
+        }
+        return redirect()->route('category.product.list')->with('status', 'Bạn đã xóa danh mục sản phẩm thành công !');
+    }
+
+    private function deleteSubcategories($parentId)
+    {
+        $subcategories = CategoriesProduct::where('parent_id', $parentId)->get();
+
+        foreach ($subcategories as $subcategory) {
+            $this->deleteSubcategories($subcategory->id);
+            $subcategory->delete();
+        }
+    }
+
     function showSubcategories($parentId)
     {
         // Lấy danh mục cha theo ID

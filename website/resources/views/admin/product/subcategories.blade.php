@@ -31,14 +31,14 @@
                                         <td>{!! $subcategory->desc !!}</td>
                                         <td>
                                             <button
-                                                class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit-category"
+                                                class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit-category-product"
                                                 type="button" data-id="{{ $subcategory->id }}"
                                                 data-name="{{ $subcategory->name }}" data-desc="{{ $subcategory->desc }}"
                                                 data-parent_id="{{ $subcategory->parent_id }}" data-toggle="tooltip"
                                                 data-placement="top" title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </button>
-                                            <a href="{{ route('category.post.delete', $subcategory->id) }}"
+                                            <a href="{{ route('category.product.delete', $subcategory->id) }}"
                                                 onclick="return confirm('Bạn có chắc xóa danh mục này không?')"
                                                 class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button"
                                                 data-toggle="tooltip" data-placement="top" title="Delete"><i

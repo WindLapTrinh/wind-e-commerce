@@ -37,14 +37,14 @@
                                         <td>{{ $category->slug }}</td>
                                         <td>{!! $category->desc !!}</td>
                                         <td>
-                                            <button class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit-category"
+                                            <button class="btn btn-success btn-submit btn-sm rounded-0 text-white btn-edit-category-post"
                                                 type="button" data-id="{{ $category->id }}"
                                                 data-name="{{ $category->name }}" data-desc="{{ $category->desc }}"
                                                 data-parent_id="{{ $category->parent_id }}" data-toggle="tooltip"
                                                 data-placement="top" title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </button>
-                                            <a href="{{route('category.post.delete', $category->id)}}"
+                                            <a href="{{route('category.product.delete', $category->id)}}"
                                                 onclick="return confirm('Bạn có chắc xóa danh mục này không?')"
                                                 class="btn btn-danger btn-sm rounded-0 text-white btn-submit" type="button"
                                                 data-toggle="tooltip" data-placement="top" title="Delete"><i

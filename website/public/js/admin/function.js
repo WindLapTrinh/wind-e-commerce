@@ -30,7 +30,7 @@ function showSubcategories(parentId) {
 // Update this part of the JavaScript code
 $(document).ready(function () {
     // Bắt sự kiện click vào nút Edit
-    $(".btn-edit-category").on("click", function () {
+    $(".btn-edit-category-post").on("click", function () {
         var categoryId = $(this).data("id");
         var categoryName = $(this).data("name");
         var categoryDesc = $(this).data("desc");
@@ -43,6 +43,25 @@ $(document).ready(function () {
 
         // Dynamically build the form action with the base URL and category ID
         var formAction = baseUrl + "/category/post/update/" + categoryId;
+        $("#editCategoryForm").attr("action", formAction);
+
+        // Hiển thị modal
+        $("#editCategoryModal").modal("show");
+    });
+
+    $(".btn-edit-category-product").on("click", function () {
+        var categoryId = $(this).data("id");
+        var categoryName = $(this).data("name");
+        var categoryDesc = $(this).data("desc");
+        var categoryParentId = $(this).data("parent_id");
+
+        // Điền dữ liệu vào modal
+        $("#editCategoryModal #edit_name").val(categoryName);
+        $("#editCategoryModal #edit_desc").val(categoryDesc);
+        $("#editCategoryModal #edit_parent_id").val(categoryParentId);
+
+        // Dynamically build the form action with the base URL and category ID
+        var formAction = baseUrl + "/category/product/update/" + categoryId;
         $("#editCategoryForm").attr("action", formAction);
 
         // Hiển thị modal

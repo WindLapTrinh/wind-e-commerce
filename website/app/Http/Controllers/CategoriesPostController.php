@@ -62,7 +62,7 @@ class CategoriesPostController extends Controller
             'parent_id' => $request->input('parent_id'),
         ]);
 
-        return redirect()->route('category.post.add')->with('status', 'Cập nhật danh mục thành công');
+        return redirect()->route('category.post.list')->with('status', 'Cập nhật danh mục thành công');
     }
     // delete 
     public function delete($id)

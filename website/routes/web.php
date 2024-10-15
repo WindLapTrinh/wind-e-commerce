@@ -109,10 +109,14 @@ Route::middleware('auth')->group(function(){
     //molude categories product
     Route::get("category/product/list", [CategoriesProductController::class, "list"])->name("category.product.list");
     Route::post("category/product/store", [CategoriesProductController::class, "store"])->name("category.product.store");
+    Route::put("category/product/update/{id}", [CategoriesProductController::class, "update"])->name("category.product.update");
+    Route::get("category/product/delete/{id}", [CategoriesProductController::class, "delete"])->name("category.product.delete");
     Route::get('category/product/subcategories/{parentId}', [CategoriesProductController::class, 'showSubcategories'])->name('category.product.subcategories');
 
     //molude product
     Route::get("admin/product/add", [ProductController::class, "add"])->name("product.add");
+    Route::post("admin/product/store", [ProductController::class, "store"])->name("product.store");
+
 
     //model images
     Route::get('/admin/image/list', [ImageController::class, 'list'])->name('admin.image.list');
