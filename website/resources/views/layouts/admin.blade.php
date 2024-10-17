@@ -263,8 +263,7 @@
                     </a>
                     <i class="arrow fas fa-angle-right"></i>
                     <ul class="sub-menu">
-                        <li class="chilldent-menu-top"><a href="{{ url('admin/product/add') }}">Thêm mới</a></li>
-                        <li><a href="{{ url('admin/product/list') }}">Danh sách</a></li>
+                        <li class="chilldent-menu-top"><a href="{{ url('admin/product/list') }}">Danh sách</a></li>
                         <li class="chilldent-menu-bottom"><a href="{{ url('category/product/list') }}">Danh
                                 mục</a></li>
                     </ul>

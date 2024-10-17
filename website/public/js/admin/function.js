@@ -139,3 +139,22 @@ document.querySelectorAll(".file-item").forEach((item) => {
         selectImage(imageUrl, fileName, fileSize);
     });
 });
+
+//list images
+document.getElementById('images').addEventListener('change', function(event) {
+    const imagePreview = document.getElementById('image-preview');
+    imagePreview.innerHTML = ''; // Xóa các ảnh trước đó nếu có
+    
+    Array.from(event.target.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '150px';  // Giới hạn kích thước ảnh
+            img.style.marginRight = '10px';
+            imagePreview.appendChild(img);  // Thêm ảnh vào div preview
+        };
+        reader.readAsDataURL(file);
+    });
+});
+

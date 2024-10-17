@@ -7,13 +7,22 @@
                 {{ session('status') }}
             </div>
         @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    {{ $error }}
+                @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="card">
             <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
                 <h5 class="m-0">Danh sách sản phẩm</h5>
                 <div>
                     <!-- Nút để mở modal thêm mới sản phẩm -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">
-                        Thêm sản phẩm mới
+                        Thêm mới
                     </button>
                 </div>
             </div>
@@ -35,7 +44,7 @@
                             @foreach ($products as $product)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $product->name }}</td>
+                                    <td class="text-setting">{{ $product->name }}</td>
                                     <td>{{ $product->category->name ?? 'Không có' }}</td>
                                     <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
                                     <td>{{ $product->stock_quantity }}</td>
@@ -43,11 +52,11 @@
                                     <td>
                                         <button class="btn btn-success btn-sm" data-toggle="modal"
                                             data-target="#editProductModal" data-id="{{ $product->id }}">
-                                            Sửa
+                                            <i class="fa fa-edit"></i>
                                         </button>
                                         <a href="{{ route('product.delete', $product->id) }}" class="btn btn-danger btn-sm"
                                             onclick="return confirm('Bạn có chắc chắn xóa sản phẩm này không?')">
-                                            Xóa
+                                            <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -67,7 +76,7 @@
         </div>
     </div>
 
-    {{-- Modal Thêm Sản phẩm --}}
+    {{-- Modal add  --}}
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -75,7 +84,7 @@
                 <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addProductModalLabel">Thêm sản phẩm mới</h5>
+                        <h5 class="modal-title" id="addProductModalLabel">Thêm sản phẩm</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -102,7 +111,7 @@
                         </div>
                         <div class="form-group">
                             <label for="details">Chi tiết sản phẩm</label>
-                            <input type="text" name="details" class="form-control" id="details">
+                            <textarea type="text" name="details" class="form-control" id="details"placeholder="Nhập chi tiết sản phẩm"></textarea>
                             @error('details')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -154,16 +163,17 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="image">Ảnh sản phẩm</label>
-                            <input type="file" name="image" id="image" class="form-control-file">
+                            <label for="images">Ảnh sản phẩm</label>
+                            <input type="file" name="images[]" id="images" class="form-control-file" multiple>
+                            <div id="image-preview" class="mt-3"></div>
                             @error('image')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
                     </div>
                 </form>
             </div>

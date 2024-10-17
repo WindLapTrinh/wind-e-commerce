@@ -117,6 +117,8 @@ Route::middleware('auth')->group(function(){
     Route::get("admin/product/list", [ProductController::class, "list"])->name("product.list");
     Route::get("admin/product/add", [ProductController::class, "add"])->name("product.add");
     Route::post("admin/product/store", [ProductController::class, "store"])->name("product.store");
+    Route::get("admin/product/delete/{id}", [ProductController::class, "delete"])->name("product.delete");
+
 
 
     //model images
