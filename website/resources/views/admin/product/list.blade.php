@@ -50,7 +50,7 @@
                                     <td>{{ $product->stock_quantity }}</td>
                                     <td>{{ $product->product_status }}</td>
                                     <td>
-                                        <button class="btn btn-success btn-sm" data-toggle="modal"
+                                        <button class="btn btn-success btn-sm btn-edit-product" data-toggle="modal"
                                             data-target="#editProductModal" data-id="{{ $product->id }}">
                                             <i class="fa fa-edit"></i>
                                         </button>
@@ -155,7 +155,10 @@
                             <label for="category_id">Danh mục</label>
                             <select name="category_id" class="form-control" id="category_id">
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @include('admin.partials.category-option', [
+                                        'category' => $category,
+                                        'prefix' => '',
+                                    ])
                                 @endforeach
                             </select>
                             @error('category_id')
@@ -174,6 +177,90 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                         <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal edit product --}}
+    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="editPostForm" action="{{ route('post.update') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="post_id" id="post_id">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Chỉnh sửa sản phẩm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Tên sản phẩm</label>
+                            <input type="text" name="name" class="form-control" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="desc">Mô tả</label>
+                            <input type="text" name="desc" class="form-control" id="desc" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="details">Chi tiết sản phẩm </label>
+                            <textarea class="form-control" name="details" id="details"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Giá</label>
+                            <input type="text" name="price" class="form-control" id="price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="post_category">Danh mục</label>
+                            <select name="category_id" class="form-control" id="post_category">
+                                <option value="0">Không có</option>
+                                @foreach ($categories as $category)
+                                    @include('admin.partials.category-option', [
+                                        'category' => $category,
+                                        'prefix' => '',
+                                    ])
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <!-- Hiển thị ảnh hiện tại nếu có -->
+                            <div class="mt-2">
+                                <label class="col-12">Ảnh hiện tại:</label>
+                                <img src="" alt="Ảnh hiện tại" class="img-thumbnail" id="current_image"
+                                    width="150" style="display: none;">
+                            </div>
+                            <label for="image">Chọn ảnh mới (tùy chọn)</label>
+                            <input type="file" name="image" id="image" class="form-control-file">
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Trạng thái</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="status_pending"
+                                    value="pending">
+                                <label class="form-check-label" for="status_pending">
+                                    Chờ duyệt
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="status_published"
+                                    value="published">
+                                <label class="form-check-label" for="status_published">
+                                    Công khai
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                     </div>
                 </form>
             </div>

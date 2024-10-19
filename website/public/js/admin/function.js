@@ -99,6 +99,31 @@ $(document).ready(function () {
         // Hiển thị modal bài viết
         $("#editModal").modal("show");
     });
+
+    $(".btn-edit-product").on("click", function () {
+        var productId = $(this).data("id");
+        var productName = $(this).data("name");
+        var productDesc = $(this).data("desc");
+        var productDetails = $(this).data("details");
+        var productPrice = $(this).data('price');
+        var productStockQuantity = $(this).data('stock_quantity');
+        var productIsFeatured = $(this).data('is_featured');
+        var productStatus = $(this).data('product_status');
+
+        // Điền dữ liệu vào modal bài viết
+        $("id").val(productId);
+        $("name").val(productName);
+        $("desc").val(productDesc);
+        $("desc").val(productDesc);
+        $("details").val(productDetails);
+        $("price").val(productPrice);
+        $("stock_quantity").val(productStockQuantity);
+        $("is_featured").val(productIsFeatured);
+        $("product_status").val(productStatus);
+
+        // Hiển thị modal bài viết 
+        $("#editProductModal").modal("show");
+    });
 });
 
 // Khi người dùng nhấn vào nút upload
