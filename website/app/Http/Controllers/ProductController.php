@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         $products = Product::paginate(10);
 
-        $categories = CategoriesProduct::all();
+        $categories = CategoriesProduct::where('parent_id', 0)->get();
 
         $keyword = $request->input('keyword');
 
@@ -80,7 +80,8 @@ class ProductController extends Controller
             return redirect()->back()->with('status', 'Thêm sản phẩm thành công!');
         } catch (\Exception $e) {
             Log::error('Error adding product: ' . $e->getMessage());
-            return redirect()->back()->withErrors(['error' => 'Có lỗi xảy ra, vui lòng thử lại sau!']);
+            return redirect()->back()->withErrors(['error' => 'Đã có lỗi xảy ra !']);
         }
     }
+    
 }

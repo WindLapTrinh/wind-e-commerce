@@ -51,14 +51,23 @@
                                     <td>{{ $product->product_status }}</td>
                                     <td>
                                         <button class="btn btn-success btn-sm btn-edit-product" data-toggle="modal"
-                                            data-target="#editProductModal" data-id="{{ $product->id }}">
+                                            data-target="#editProductModal" data-id="{{ $product->id }}"
+                                            data-name="{{ $product->name }}" data-desc="{{ $product->desc }}"
+                                            data-details="{{ $product->details }}" data-price="{{ $product->price }}"
+                                            data-stock-quantity="{{ $product->stock_quantity }}"
+                                            data-is-featured="{{ $product->is_featured }}"
+                                            data-product-status="{{ $product->product_status }}"
+                                            data-image="{{ $product->image ? asset($product->image->url) : '' }}"
+                                            data-category="{{ $product->category_id }}">
                                             <i class="fa fa-edit"></i>
                                         </button>
+
                                         <a href="{{ route('product.delete', $product->id) }}" class="btn btn-danger btn-sm"
                                             onclick="return confirm('Bạn có chắc chắn xóa sản phẩm này không?')">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
+
                                 </tr>
                             @endforeach
                         @else
@@ -98,10 +107,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        {{-- <div class="form-group">
-                            <label for="slug">Slug</label>
-                            <input type="text" name="slug" class="form-control" id="slug" required>
-                        </div> --}}
                         <div class="form-group">
                             <label for="desc">Mô tả ngắn</label>
                             <input type="text" name="desc" class="form-control" id="desc">
@@ -183,87 +188,70 @@
         </div>
     </div>
 
-    {{-- Modal edit product --}}
-    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <form id="editPostForm" action="{{ route('post.update') }}" method="POST"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="post_id" id="post_id">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Chỉnh sửa sản phẩm</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Tên sản phẩm</label>
-                            <input type="text" name="name" class="form-control" id="name" required>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('product.update', $product->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <input type="hidden" name="id" id="product-id">
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
-                        <div class="form-group">
-                            <label for="desc">Mô tả</label>
-                            <input type="text" name="desc" class="form-control" id="desc" required>
+
+                        <div class="mb-3">
+                            <label for="desc" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="desc" name="desc">
                         </div>
-                        <div class="form-group">
-                            <label for="details">Chi tiết sản phẩm </label>
-                            <textarea class="form-control" name="details" id="details"></textarea>
+
+                        <div class="mb-3">
+                            <label for="details" class="form-label">Details</label>
+                            <textarea class="form-control" id="details" name="details"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="price">Giá</label>
-                            <input type="text" name="price" class="form-control" id="price" required>
+
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="price" name="price" required>
                         </div>
-                        <div class="form-group">
-                            <label for="post_category">Danh mục</label>
-                            <select name="category_id" class="form-control" id="post_category">
-                                <option value="0">Không có</option>
-                                @foreach ($categories as $category)
-                                    @include('admin.partials.category-option', [
-                                        'category' => $category,
-                                        'prefix' => '',
-                                    ])
-                                @endforeach
+
+                        <div class="mb-3">
+                            <label for="stock_quantity" class="form-label">Stock Quantity</label>
+                            <input type="number" class="form-control" id="stock_quantity" name="stock_quantity"
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="is_featured" class="form-label">Featured</label>
+                            <input type="checkbox" id="is_featured" name="is_featured">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="product_status" class="form-label">Product Status</label>
+                            <select class="form-select" id="product_status" name="product_status">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="out_of_stock">Out of Stock</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <!-- Hiển thị ảnh hiện tại nếu có -->
-                            <div class="mt-2">
-                                <label class="col-12">Ảnh hiện tại:</label>
-                                <img src="" alt="Ảnh hiện tại" class="img-thumbnail" id="current_image"
-                                    width="150" style="display: none;">
-                            </div>
-                            <label for="image">Chọn ảnh mới (tùy chọn)</label>
-                            <input type="file" name="image" id="image" class="form-control-file">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
 
-                        </div>
-
-                        <div class="form-group">
-                            <label for="status">Trạng thái</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="status" id="status_pending"
-                                    value="pending">
-                                <label class="form-check-label" for="status_pending">
-                                    Chờ duyệt
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="status" id="status_published"
-                                    value="published">
-                                <label class="form-check-label" for="status_published">
-                                    Công khai
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
+
 @endsection

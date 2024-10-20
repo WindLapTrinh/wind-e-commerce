@@ -23,4 +23,16 @@ class Product extends Model
         'user_id',
         'category_id'
     ];
+
+     // Quan hệ: Mỗi bài viết thuộc về một danh mục
+     public function category()
+     {
+         return $this->belongsTo(CategoriesProduct::class, 'category_id');
+     }
+ 
+     //get image tbale posst
+     public function image()
+     {
+         return $this->belongsTo(Image::class, 'image_id', 'id');
+     }
 }

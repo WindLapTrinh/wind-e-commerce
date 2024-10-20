@@ -100,30 +100,36 @@ $(document).ready(function () {
         $("#editModal").modal("show");
     });
 
-    $(".btn-edit-product").on("click", function () {
-        var productId = $(this).data("id");
-        var productName = $(this).data("name");
-        var productDesc = $(this).data("desc");
-        var productDetails = $(this).data("details");
-        var productPrice = $(this).data('price');
-        var productStockQuantity = $(this).data('stock_quantity');
-        var productIsFeatured = $(this).data('is_featured');
-        var productStatus = $(this).data('product_status');
+    $('.btn-edit-product').on('click', function() {
+        // Lấy dữ liệu từ thuộc tính data của button
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        var desc = $(this).data('desc');
+        var details = $(this).data('details');
+        var price = $(this).data('price');
+        var stockQuantity = $(this).data('stock-quantity');
+        var isFeatured = $(this).data('is-featured');
+        var productStatus = $(this).data('product-status');
 
-        // Điền dữ liệu vào modal bài viết
-        $("id").val(productId);
-        $("name").val(productName);
-        $("desc").val(productDesc);
-        $("desc").val(productDesc);
-        $("details").val(productDetails);
-        $("price").val(productPrice);
-        $("stock_quantity").val(productStockQuantity);
-        $("is_featured").val(productIsFeatured);
-        $("product_status").val(productStatus);
+        // Đổ dữ liệu vào các trường trong modal
+        $('#editProductModal input[name="id"]').val(id);
+        $('#editProductModal input[name="name"]').val(name);
+        $('#editProductModal input[name="desc"]').val(desc);
+        $('#editProductModal textarea[name="details"]').val(details);
+        $('#editProductModal input[name="price"]').val(price);
+        $('#editProductModal input[name="stock_quantity"]').val(stockQuantity);
+        
+        if(isFeatured == 1) {
+            $('#editProductModal input[name="is_featured"]').prop('checked', true);
+        } else {
+            $('#editProductModal input[name="is_featured"]').prop('checked', false);
+        }
 
-        // Hiển thị modal bài viết 
-        $("#editProductModal").modal("show");
+        $('#editProductModal select[name="product_status"]').val(productStatus);
+
+        
     });
+    
 });
 
 // Khi người dùng nhấn vào nút upload
