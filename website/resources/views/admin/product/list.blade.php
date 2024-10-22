@@ -53,7 +53,8 @@
                                         <button class="btn btn-success btn-sm btn-edit-product" data-toggle="modal"
                                             data-target="#editProductModal" data-id="{{ $product->id }}"
                                             data-name="{{ $product->name }}" data-desc="{{ $product->desc }}"
-                                            data-details="{{ $product->details }}" data-price="{{ $product->price }}"
+                                            data-details="{{ htmlspecialchars($product->details) }}"
+                                            data-price="{{ $product->price }}"
                                             data-stock-quantity="{{ $product->stock_quantity }}"
                                             data-is-featured="{{ $product->is_featured }}"
                                             data-product-status="{{ $product->product_status }}"
@@ -98,43 +99,140 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body row">
                         <!-- Các trường thông tin sản phẩm -->
-                        <div class="form-group">
+                        <div class="form-group col-12">
                             <label for="name">Tên sản phẩm</label>
                             <input type="text" name="name" class="form-control" id="name" required>
                             @error('name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-12">
                             <label for="desc">Mô tả ngắn</label>
                             <input type="text" name="desc" class="form-control" id="desc">
                             @error('desc')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-12">
                             <label for="details">Chi tiết sản phẩm</label>
                             <textarea type="text" name="details" class="form-control" id="details"placeholder="Nhập chi tiết sản phẩm"></textarea>
                             @error('details')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-6 col-sm-12">
                             <label for="price">Giá</label>
                             <input type="number" name="price" class="form-control" id="price" required>
                             @error('price')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-6 col-sm-12">
                             <label for="stock_quantity">Số lượng kho</label>
                             <input type="number" name="stock_quantity" class="form-control" id="stock_quantity" required>
                             @error('stock_quantity')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label for="is_featured">Nổi bật</label>
+                            <select name="is_featured" class="form-control" id="is_featured">
+                                <option value="0">Không</option>
+                                <option value="1">Có</option>
+                            </select>
+                            @error('is_featured')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label for="product_status">Trạng thái</label>
+                            <select name="product_status" class="form-control" id="product_status">
+                                <option value="active">Hoạt động</option>
+                                <option value="inactive">Vô hiệu hóa</option>
+                                <option value="out_of_stock">Hết hàng</option>
+                            </select>
+                            @error('product_status')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="category_id">Danh mục</label>
+                            <select name="category_id" class="form-control" id="category_id">
+                                @foreach ($categories as $category)
+                                    @include('admin.partials.category-option', [
+                                        'category' => $category,
+                                        'prefix' => '',
+                                    ])
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="images">Ảnh sản phẩm</label>
+                            <input type="file" name="images[]" id="images" class="form-control-file" multiple>
+                            <div id="image-preview" class="mt-3"></div>
+                            @error('image')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Chỉnh sửa thông tin</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('product.update', $product->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <input type="hidden" name="id" id="product-id">
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="desc" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="desc" name="desc">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="details" class="form-label">Details</label>
+                            <textarea class="form-control" id="mytextarea" name="details"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="price" name="price" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="stock_quantity" class="form-label">Stock Quantity</label>
+                            <input type="number" class="form-control" id="stock_quantity" name="stock_quantity"
+                                required>
+                        </div>
+
                         <div class="form-group">
                             <label for="is_featured">Nổi bật</label>
                             <select name="is_featured" class="form-control" id="is_featured">
@@ -145,6 +243,7 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label for="product_status">Trạng thái</label>
                             <select name="product_status" class="form-control" id="product_status">
@@ -177,73 +276,6 @@
                             @error('image')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Thêm mới</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Product Modal -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('product.update', $product->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-
-                        <input type="hidden" name="id" id="product-id">
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Product Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="desc" class="form-label">Description</label>
-                            <input type="text" class="form-control" id="desc" name="desc">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="details" class="form-label">Details</label>
-                            <textarea class="form-control" id="details" name="details"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="number" class="form-control" id="price" name="price" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="stock_quantity" class="form-label">Stock Quantity</label>
-                            <input type="number" class="form-control" id="stock_quantity" name="stock_quantity"
-                                required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="is_featured" class="form-label">Featured</label>
-                            <input type="checkbox" id="is_featured" name="is_featured">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="product_status" class="form-label">Product Status</label>
-                            <select class="form-select" id="product_status" name="product_status">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="out_of_stock">Out of Stock</option>
-                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Save Changes</button>

@@ -29,6 +29,11 @@ function showSubcategories(parentId) {
 
 // Update this part of the JavaScript code
 $(document).ready(function () {
+    // setting tiny
+    tinymce.init({
+        selector: "textarea",
+        height: 300,
+    });
     // Bắt sự kiện click vào nút Edit
     $(".btn-edit-category-post").on("click", function () {
         var categoryId = $(this).data("id");
@@ -100,36 +105,38 @@ $(document).ready(function () {
         $("#editModal").modal("show");
     });
 
-    $('.btn-edit-product').on('click', function() {
+    $(".btn-edit-product").on("click", function () {
         // Lấy dữ liệu từ thuộc tính data của button
-        var id = $(this).data('id');
-        var name = $(this).data('name');
-        var desc = $(this).data('desc');
-        var details = $(this).data('details');
-        var price = $(this).data('price');
-        var stockQuantity = $(this).data('stock-quantity');
-        var isFeatured = $(this).data('is-featured');
-        var productStatus = $(this).data('product-status');
-
+        var id = $(this).data("id");
+        var name = $(this).data("name");
+        var desc = $(this).data("desc");
+        var details = $(this).data("details");
+        console.log("Infomation product:", details);    
+        var price = $(this).data("price");
+        var stockQuantity = $(this).data("stock-quantity");
+        var isFeatured = $(this).data("is-featured");
+        var productStatus = $(this).data("product-status");
+        var categoryId = $(this).data('category_id');
         // Đổ dữ liệu vào các trường trong modal
         $('#editProductModal input[name="id"]').val(id);
         $('#editProductModal input[name="name"]').val(name);
         $('#editProductModal input[name="desc"]').val(desc);
-        $('#editProductModal textarea[name="details"]').val(details);
+        $('#details').val(details); // Set details in textarea
+        // Initialize TinyMCE if applicable
+        if (tinymce.get('mytextarea')) {
+            tinymce.get('mytextarea').setContent(details);
+        } else {
+            console.log("TinyMCE editor chưa được khởi tạo");
+        }
+        
         $('#editProductModal input[name="price"]').val(price);
         $('#editProductModal input[name="stock_quantity"]').val(stockQuantity);
-        
-        if(isFeatured == 1) {
-            $('#editProductModal input[name="is_featured"]').prop('checked', true);
-        } else {
-            $('#editProductModal input[name="is_featured"]').prop('checked', false);
-        }
-
+        $('#editProductModal input[name="is_featured"]').prop( "checked",isFeatured == 1);
         $('#editProductModal select[name="product_status"]').val(productStatus);
+        $('#editProductModal select[name="category_id"]').val(categoryId);
 
-        
+        $("#editProductModal").modal("show");
     });
-    
 });
 
 // Khi người dùng nhấn vào nút upload
@@ -172,20 +179,19 @@ document.querySelectorAll(".file-item").forEach((item) => {
 });
 
 //list images
-document.getElementById('images').addEventListener('change', function(event) {
-    const imagePreview = document.getElementById('image-preview');
-    imagePreview.innerHTML = ''; // Xóa các ảnh trước đó nếu có
-    
-    Array.from(event.target.files).forEach(file => {
+document.getElementById("images").addEventListener("change", function (event) {
+    const imagePreview = document.getElementById("image-preview");
+    imagePreview.innerHTML = ""; // Xóa các ảnh trước đó nếu có
+
+    Array.from(event.target.files).forEach((file) => {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = document.createElement('img');
+        reader.onload = function (e) {
+            const img = document.createElement("img");
             img.src = e.target.result;
-            img.style.maxWidth = '150px';  // Giới hạn kích thước ảnh
-            img.style.marginRight = '10px';
-            imagePreview.appendChild(img);  // Thêm ảnh vào div preview
+            img.style.maxWidth = "150px"; // Giới hạn kích thước ảnh
+            img.style.marginRight = "10px";
+            imagePreview.appendChild(img); // Thêm ảnh vào div preview
         };
         reader.readAsDataURL(file);
     });
 });
-

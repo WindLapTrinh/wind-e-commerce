@@ -12,14 +12,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/solid.min.css">
     <link rel="stylesheet" href="{{ asset('css/admin/style.css') }}">
     <title>Wind Lập Trình</title>
-    <!-- Place the first <script> tag in your HTML 's <head> --> 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-   <script src = "https://cdn.tiny.cloud/1/whxvxved7yokt3y3vg4287at086agkhd6tujkl6jumjy6iwy/tinymce/4/tinymce.min.js" referrerpolicy = "origin" >
+    <!-- Place the first <script>
+        tag in your HTML 's <head> -->  <
+            script src = "https://code.jquery.com/jquery-3.5.1.min.js" >
     </script>
+   <script src="https://cdn.tiny.cloud/1/whxvxved7yokt3y3vg4287at086agkhd6tujkl6jumjy6iwy/tinymce/4/tinymce.min.js"
+       referrerpolicy="origin"></script>
     <script>
         var editor_config = {
             path_absolute: "http://localhost/project-2024/wind-e-commerce/website/public/",
-            selector: "textarea",
+            selector: "#mytextarea",
             plugins: [
                 "advlist autolink lists link image charmap print preview hr anchor pagebreak",
                 "searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -97,8 +99,8 @@
                     close_previous: "no"
                 });
             }
-        };
 
+        };
         tinymce.init(editor_config);
     </script>
 </head>
@@ -252,7 +254,7 @@
                             <i class="fas fa-camera icon-parent-menu"></i>
                         </div>
                         Hình ảnh
-                    </a>  
+                    </a>
                 </li>
                 <li class="nav-link">
                     <a class="name-parent" href="{{ url('admin/product/list') }}">
@@ -360,7 +362,7 @@
     <script>
         var baseUrl = "{{ url('/') }}";
     </script>
-    
+
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/admin/function.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
